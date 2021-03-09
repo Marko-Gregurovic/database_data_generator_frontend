@@ -1,3 +1,7 @@
+. {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -36,4 +40,41 @@
   100% {
     transform: translateY(0px)
   }
+}
+
+.slide {
+  width: 33.33%;
+  height: 1000px;
+}
+
+.bg-black {
+  background-color: #1a1a1d;
+}
+
+.navbar-custom {
+  height: 8vh;
+}
+
+
+html body {
+  /* background-color: #0b0c10; */
+  font-family: "Oswald", sans-serif !important;
+ 
+}
+
+
+.cont {
+  background-image: url('./pictures/Untitled-2.jpg');
+  min-height: 92vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main-text {
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 92vh;
 }

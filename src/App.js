@@ -1,57 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './custom.scss';
 
-function App() {
+
+import Homepage from './pages/Homepage';
+import Database from './pages/Database';
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from "react-router-dom";
+import PrivateRoute from './PrivateRoute';
+import AuthContextProvider, { AuthContext } from './context/auth';
+import LoginForm from './Components/LoginForm';
+
+function App(props) {
+  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const [authTokens, setAuthTokens] = useState(existingTokens);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(data);
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <AuthContextProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Homepage />
+          </Route>
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/signup">
+            <SignupPage />
+          </Route>
+          <PrivateRoute path="/database" component={Database} />
+        </Switch>
+      </Router>
+    </AuthContextProvider>
+
   );
 }
 
