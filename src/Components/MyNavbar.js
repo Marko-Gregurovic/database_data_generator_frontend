@@ -1,5 +1,4 @@
-import { Navbar } from "react-bootstrap";
-
+import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import { LOGOUT } from "../helpers/Actions";
@@ -8,6 +7,7 @@ import logo from '../pictures/logo-1-71x71.png';
 
 function MyNavbar() {
     const { auth, dispatch } = useAuth();
+    const history = useHistory();
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-transparent navbar-custom">
@@ -25,27 +25,33 @@ function MyNavbar() {
                     </li>
                 </ul>
             </div>
-            <div className="btn-group">
+            <div className="btn-group btn-group-lg" role="group">
                 {
                     auth.isLoggedIn === false ?
-                        <div>
-                            <Link to="/login">
-                                <button className="pull-right btn btn-lg btn-mylightblack text-myblue">Login</button>
-                            </Link>
-                            <Link to="/signup">
-                                <button className="pull-right btn btn-lg btn-mylightblack text-myblue">Sign Up</button>
-                            </Link>
+                        <div className="btn-group btn-group-lg">
+
+                            <button
+                                className="pull-right btn btn-mylightblack text-myblue"
+                                onClick={() => history.push('/login')}
+                            >
+                                Login
+                            </button>
+
+                            <button
+                                className="pull-right btn btn-mylightblack text-myblue"
+                                onClick={() => history.push('/signup')}
+                            >
+                                Sign Up
+                            </button>
                         </div>
                         :
-                        <div>
-                            <Link to="/">
+                        <div className="btn-group btn-group-lg">
                                 <button
-                                    className="pull-right btn btn-lg btn-mylightblack text-myblue"
-                                    onClick={() => dispatch({type: LOGOUT})}
+                                    className="pull-right btn btn-mylightblack text-myblue"
+                                    onClick={() => {dispatch({ type: LOGOUT }); history.push('/')}}
                                 >
                                     Logout
                                 </button>
-                            </Link>
                         </div>
                 }
                 {/* <Link to="/login">
