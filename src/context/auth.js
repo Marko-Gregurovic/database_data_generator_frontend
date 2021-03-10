@@ -10,17 +10,18 @@ export function useAuth() {
 const initialValues = {
   isError: false,
   isLoggedIn: false,
-  token: null
+  token: null,
+  message: null
 }
 
 const AuthContextProvider = ({children}) => {
   const [auth, dispatch] = useReducer(Reducer, {initialValues}, () => {
-    const data = localStorage.tokens;
+    const data = localStorage.dbGenApplication;
     return data ? JSON.parse(data) : initialValues;
   });
   
   useEffect(() => {
-    localStorage.tokens = JSON.stringify(auth)
+    localStorage.dbGenApplication = JSON.stringify(auth)
   }, [auth]);
 
   return (

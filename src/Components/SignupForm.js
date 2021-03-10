@@ -1,7 +1,7 @@
 import { Field, Form, withFormik, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../context/auth';
-import { LOGIN } from '../helpers/Actions';
+import { LOGIN, SIGNUP_ERROR } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -26,12 +26,13 @@ const loginPageStyle = {
     boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)"
 }
 
-const LoginForm = (props) => {
+const SignupForm = (props) => {
     const { auth, dispatch } = useAuth();
     const history = useHistory();
-    
+    let error = false;
+
     useEffect(() => {
-        if(auth.isLoggedIn)
+        if (auth.isLoggedIn)
             history.push("/database")
     }, [auth.isLoggedIn]);
 
@@ -40,68 +41,71 @@ const LoginForm = (props) => {
     }
 
     return (
-        <div 
-        className="main-text">
+        <div
+            className="main-text">
 
-        <Formik
-            initialValues={{ username: "", password: "" }}
-            onSubmit={(values, { setSubmitting }) => {
-                const REST_API_URL = "https://localhost:44324/login/authenticate";
-                fetch(REST_API_URL, {
-                    method: 'post',
-                    body: JSON.stringify(values),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response;
-                        } else {
-                            // HANDLE ERROR
-                            // setIsError(true);
-                            dispatch({ type: "LOGIN_ERROR", isError: true });
-                            throw new Error('Something went wrong');
+            <Formik
+                initialValues={{ username: "", password: "" }}
+                onSubmit={(values, { setSubmitting }) => {
+                    const REST_API_URL = "https://localhost:44324/register";
+                    fetch(REST_API_URL, {
+                        method: 'post',
+                        body: JSON.stringify(values),
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
+                    })
+                    .then(response => {
+                        if (!response.ok) 
+                        {
+                            error = true
+                        }
+                        
+                        return response;
                     }).then(response => response.json())
-                    .then(data => {
-                        // HANDLE RESPONSE DATA
-                        // setAuthTokens(data.token)
-                        dispatch({ type: LOGIN, token: data.token });
-                        // window.location.href = "/database"
-                        return ;
-                    }).catch((error) => {
-                        // HANDLE ERROR
-                        console.log(error);
+                    .then(response => {
+                        if(error) {
+                            dispatch({ type: SIGNUP_ERROR, isError: true, message: response.message });
+                            return;
+                        }
+
+                        dispatch({ type: LOGIN, token: response.token });
+                        return;
                     });
             }}
-            validationSchema={validationSchema}
-        >
-            <div className="container">
-                <div className="login-wrapper bg-mylightblack text-myblue" style={loginPageStyle}>
-                    <h2>Sign Up</h2>
-                    <Form className="form-container">
-                        <div className="form-group">
-                            <Field id="username" type="string" name="username"placeholder="Username" />
-                            <ErrorMessage name="username" component="div" />
-                        </div>
-                        <div className="form-group">
-                            <Field type="string" name="email" placeholder="Email" />
-                            <ErrorMessage name="email" component="div" />
-                        </div>
-                        <div className="form-group">
-                            <Field type="password" name="password" placeholder="Password" />
-                            <ErrorMessage name="password" component="div" />
-                        </div>
-                        <button type="submit" className="pull-right btn btn-lg btn-myblue text-mylightblack">
-                            CREATE ACCOUNT
+                validationSchema={validationSchema}
+            >
+                <div className="container">
+                    <div className="login-wrapper bg-mylightblack text-myblue" style={loginPageStyle}>
+                        <h2>Sign Up</h2>
+                        <Form className="form-container">
+                            <div className="form-group">
+                                <Field id="username" type="string" name="username" placeholder="Username" />
+                                <ErrorMessage name="username" component="div" />
+                            </div>
+                            <div className="form-group">
+                                <Field type="string" name="email" placeholder="Email" />
+                                <ErrorMessage name="email" component="div" />
+                            </div>
+                            <div className="form-group">
+                                <Field type="password" name="password" placeholder="Password" />
+                                <ErrorMessage name="password" component="div" />
+                            </div>
+                            {
+                                auth.isError !== null && auth.message != null &&
+                                <div class="alert alert-primary bg-mygray text-mylightblack" role="alert">
+                                    {auth.message}
+                                </div>
+                            }
+                            <button type="submit" className="pull-right btn btn-lg btn-myblue text-mylightblack">
+                                CREATE ACCOUNT
                         </button>
-                    </Form>
+                        </Form>
+                    </div>
                 </div>
-            </div>
-        </Formik >
+            </Formik >
         </div>
     );
 }
 
-export default LoginForm;
+export default SignupForm;

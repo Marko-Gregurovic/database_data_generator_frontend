@@ -1,23 +1,35 @@
-import { LOGIN, LOGOUT } from './Actions';
+import { LOGIN, LOGIN_ERROR, LOGOUT, SIGNUP_ERROR, RESET_ERROR } from './Actions';
 
 const Reducer = (state, action) => {
     switch (action.type) {
+        case RESET_ERROR:
+            return {
+                ...state,
+                isError: false,
+                message: null
+            }
         case LOGIN:
             return {
                 ...state,
                 isLoggedIn: true,
-                token: action.token
+                token: action.token,
+                isError: false,
+                message: null
             }
         case LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,
-                token: null
+                token: null,
+                isError: false,
+                message:null
             }
-        case "LOGIN_ERROR":
+        case LOGIN_ERROR:
+        case SIGNUP_ERROR:
             return {
                 ...state,
-                isError: action.isError
+                isError: action.isError,
+                message: action.message
             }
         default:
             break;

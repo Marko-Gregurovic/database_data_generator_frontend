@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/auth";
-import { LOGOUT } from "../helpers/Actions";
+import { LOGOUT, RESET_ERROR } from "../helpers/Actions";
 
 import logo from '../pictures/logo-1-71x71.png';
 
@@ -32,14 +32,20 @@ function MyNavbar() {
 
                             <button
                                 className="pull-right btn btn-mylightblack text-myblue"
-                                onClick={() => history.push('/login')}
+                                onClick={() => {
+                                    history.push('/login');
+                                    dispatch({type: RESET_ERROR});
+                                }}
                             >
                                 Login
                             </button>
 
                             <button
                                 className="pull-right btn btn-mylightblack text-myblue"
-                                onClick={() => history.push('/signup')}
+                                onClick={() => {
+                                    history.push('/signup');
+                                    dispatch({type: RESET_ERROR});
+                                }}
                             >
                                 Sign Up
                             </button>
