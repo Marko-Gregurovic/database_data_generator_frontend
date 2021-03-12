@@ -34,7 +34,7 @@ function MyNavbar() {
                                 className="pull-right btn btn-mylightblack text-myblue"
                                 onClick={() => {
                                     history.push('/login');
-                                    dispatch({type: RESET_ERROR});
+                                    dispatch({ type: RESET_ERROR });
                                 }}
                             >
                                 Login
@@ -44,7 +44,7 @@ function MyNavbar() {
                                 className="pull-right btn btn-mylightblack text-myblue"
                                 onClick={() => {
                                     history.push('/signup');
-                                    dispatch({type: RESET_ERROR});
+                                    dispatch({ type: RESET_ERROR });
                                 }}
                             >
                                 Sign Up
@@ -52,12 +52,18 @@ function MyNavbar() {
                         </div>
                         :
                         <div className="btn-group btn-group-lg">
-                                <button
-                                    className="pull-right btn btn-mylightblack text-myblue"
-                                    onClick={() => {dispatch({ type: LOGOUT }); history.push('/')}}
-                                >
-                                    Logout
-                                </button>
+                            <button
+                                className="pull-right btn btn-mylightblack text-myblue"
+                                onClick={() => { history.push('/user/connections') }}
+                            >
+                                Connections
+                            </button>
+                            <button
+                                className="pull-right btn btn-mylightblack text-myblue"
+                                onClick={() => { dispatch({ type: LOGOUT }); history.push('/') }}
+                            >
+                                Logout
+                            </button>
                         </div>
                 }
                 {/* <Link to="/login">
