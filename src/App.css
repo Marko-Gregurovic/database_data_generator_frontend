@@ -65,8 +65,6 @@ html body {
 
 .cont {
   background-image: url('./pictures/Untitled-2.jpg');
-  min-height: 92vh;
-  background-repeat: no-repeat;
   background-size: cover;
 }
 
@@ -77,4 +75,31 @@ html body {
   justify-content: center;
   flex-direction: column;
   height: 92vh;
+  max-height: 92vh;
+}
+
+.plus {
+  position:relative;
+  left:100px;
+  top:100px;
+  border: 1px dotted white;
+  width: 3px;
+  height: 3px;
+  background-color: black;
+  box-sizing: border-box;
+  transform: scale(11);
+}
+
+.plus:hover {
+  transform: scale(10);
+}
+
+.accordion .card-header:after {
+  font-family: 'FontAwesome';  
+  content: "\f068";
+  float: right; 
+}
+.accordion .card-header.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\f067"; 
 }

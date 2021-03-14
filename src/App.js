@@ -21,7 +21,8 @@ import {
 import PrivateRoute from './PrivateRoute';
 import AuthContextProvider, { AuthContext } from './context/auth';
 import LoginForm from './Components/LoginForm';
-import Connections from './pages/Connections';
+import ConnectionsPage from './pages/ConnectionsPage';
+import AddConnectionPage from './pages/AddConnectionPage';
 
 function App(props) {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -47,7 +48,8 @@ function App(props) {
             <SignupPage />
           </Route>
           <PrivateRoute path="/database" component={Database} />
-          <PrivateRoute path="/user/connections" component={Connections} />
+          <PrivateRoute exact path="/user/connections" component={ConnectionsPage} />
+          <PrivateRoute path="/user/connections/add" component={AddConnectionPage} />
         </Switch>
       </Router>
     </AuthContextProvider>
