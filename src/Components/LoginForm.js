@@ -60,7 +60,6 @@ const LoginForm = (props) => {
                             {
                                 error = true
                             }
-                            
                             return response;
                         }).then(response => response.json())
                         .then(response => {
@@ -80,16 +79,16 @@ const LoginForm = (props) => {
                         <h2>Login Page</h2>
                         <Form className="form-container">
                             <div className="form-group">
-                                <Field type="string" name="username" placeholder="Username" />
+                                <Field type="string" name="username" placeholder="Username" className="form-control" />
                                 <ErrorMessage name="username" component="div" />
                             </div>
                             <div className="form-group">
-                                <Field type="password" name="password" placeholder="Password" />
+                                <Field type="password" name="password" placeholder="Password" className="form-control" />
                                 <ErrorMessage name="password" component="div" />
                             </div>
                             {
                                 auth.isError !== null && auth.message != null &&
-                                <div class="alert alert-primary bg-mygray text-mylightblack" role="alert">
+                                <div className="alert alert-primary bg-mygray text-mylightblack" role="alert">
                                     {auth.message}
                                 </div>
                             }

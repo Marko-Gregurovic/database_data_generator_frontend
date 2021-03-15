@@ -10,8 +10,6 @@ const Connections = (props) => {
     const [connections, setConnections] = useState([]);
 
 
-    console.log(auth)
-
     let RequestConnections = {
         token: auth.token
     };
@@ -20,17 +18,16 @@ const Connections = (props) => {
         let error;
         const REST_API_URL = "https://localhost:44324/user/connections";
         fetch(REST_API_URL, {
-            method: 'post',
-            body: JSON.stringify(RequestConnections),
+            method: 'get',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.token
             }
         })
             .then(response => {
                 if (!response.ok) {
                     error = true
                 }
-
                 return response;
             }).then(response => response.json())
             .then(response => {

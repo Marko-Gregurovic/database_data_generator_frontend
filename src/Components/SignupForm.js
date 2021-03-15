@@ -4,6 +4,7 @@ import { useAuth } from '../context/auth';
 import { LOGIN, SIGNUP_ERROR } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
+import { API_URL } from '../helpers/Constants';
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,7 +48,7 @@ const SignupForm = (props) => {
             <Formik
                 initialValues={{ username: "", password: "" }}
                 onSubmit={(values, { setSubmitting }) => {
-                    const REST_API_URL = "https://localhost:44324/register";
+                    const REST_API_URL = API_URL + "/register";
                     fetch(REST_API_URL, {
                         method: 'post',
                         body: JSON.stringify(values),
@@ -80,20 +81,20 @@ const SignupForm = (props) => {
                         <h2>Sign Up</h2>
                         <Form className="form-container">
                             <div className="form-group">
-                                <Field id="username" type="string" name="username" placeholder="Username" />
+                                <Field id="username" type="string" name="username" placeholder="Username" className="form-control" />
                                 <ErrorMessage name="username" component="div" />
                             </div>
                             <div className="form-group">
-                                <Field type="string" name="email" placeholder="Email" />
+                                <Field type="string" name="email" placeholder="Email" className="form-control" />
                                 <ErrorMessage name="email" component="div" />
                             </div>
                             <div className="form-group">
-                                <Field type="password" name="password" placeholder="Password" />
+                                <Field type="password" name="password" placeholder="Password" className="form-control" />
                                 <ErrorMessage name="password" component="div" />
                             </div>
                             {
                                 auth.isError !== null && auth.message != null &&
-                                <div class="alert alert-primary bg-mygray text-mylightblack" role="alert">
+                                <div className="alert alert-primary bg-mygray text-mylightblack" role="alert">
                                     {auth.message}
                                 </div>
                             }
