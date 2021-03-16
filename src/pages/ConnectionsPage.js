@@ -2,6 +2,7 @@ import Connections from '../Components/Connections';
 import MyNavbar from '../Components/MyNavbar';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../context/auth';
+import { Container } from 'react-bootstrap';
 
 const ConnectionsPage = () => {
     const { auth, dispatch } = useAuth();

@@ -31,6 +31,8 @@ const Reducer = (state, action) => {
                 isError: action.isError,
                 message: action.message
             }
+        case "DELETE_CONNECTION":
+            return state;
         default:
             break;
     }
