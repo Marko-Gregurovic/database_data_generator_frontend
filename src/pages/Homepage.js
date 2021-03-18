@@ -1,5 +1,5 @@
-import MyNavbar from '../Components/MyNavbar';
-import PictureSlide from '../Components/PictureSlide';
+import MyNavbar from '/components/MyNavbar';
+import PictureSlide from '/components/PictureSlide';
 
 function Homepage(){
     return (

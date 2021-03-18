@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import LoginForm from '../Components/LoginForm';
-import MyNavbar from '../Components/MyNavbar';
+import LoginForm from '/components/LoginForm';
+import MyNavbar from '/components/MyNavbar';
 import { useAuth } from '../context/auth';
 
 import 'core-js/es/promise';

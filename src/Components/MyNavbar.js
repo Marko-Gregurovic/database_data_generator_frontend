@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import { LOGOUT, RESET_ERROR } from "../helpers/Actions";
 
-import logo from '../pictures/logo-1-71x71.png';
+import logo from '../assets/img/logo-1-71x71.png';
 
 function MyNavbar() {
     const { auth, dispatch } = useAuth();

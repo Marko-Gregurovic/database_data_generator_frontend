@@ -1,5 +1,5 @@
-import ConnectionForm from '../Components/ConnectionForm';
-import MyNavbar from '../Components/MyNavbar';
+import ConnectionForm from '../components/ConnectionForm';
+import MyNavbar from '../components/MyNavbar';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 

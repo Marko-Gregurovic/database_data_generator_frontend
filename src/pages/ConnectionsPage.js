@@ -1,5 +1,5 @@
-import Connections from '../Components/Connections';
-import MyNavbar from '../Components/MyNavbar';
+import Connections from '../components/Connections';
+import MyNavbar from '../components/MyNavbar';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import { Container } from 'react-bootstrap';

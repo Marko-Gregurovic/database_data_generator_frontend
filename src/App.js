@@ -20,7 +20,6 @@ import {
 } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import AuthContextProvider, { AuthContext } from './context/auth';
-import LoginForm from './Components/LoginForm';
 import ConnectionsPage from './pages/ConnectionsPage';
 import AddConnectionPage from './pages/AddConnectionPage';
 
