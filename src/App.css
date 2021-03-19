@@ -14,7 +14,7 @@ html body {
 }
 
 .cont {
-  background-image: url('./pictures/Untitled-2.jpg');
+  background-image: url('assets/img/background2.jpg');
   background-size: cover;
   overflow: auto;
   height: 100vh;

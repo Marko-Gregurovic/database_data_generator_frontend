@@ -6,10 +6,10 @@ function PictureSlide() {
                        d-flex
                        align-items-center
                        justify-content-center
-                       text-myblue
+                       text-light
                        display-1
                        main-text">
-            Test you database faster with xxxx
+            Test you database faster with GenZo
         </div>
         </div>
         

@@ -4,13 +4,40 @@ import { useEffect, useState } from 'react';
 import { LOGOUT, RESET_ERROR } from "../helpers/Actions";
 import { Button, ButtonGroup, Container } from "react-bootstrap";
 import { API_URL } from "../helpers/Constants";
+import { makeStyles } from "@material-ui/core/styles";
 
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
+import oracleImage from "assets/img/bg_oracle.jpg";
+import postgreImage from "assets/img/bg_postgre.jpg";
+import mysqlImage from "assets/img/bg_mysql.jpg";
+import sqlserverImage from "assets/img/bg_sqlserver.jpg";
+
+import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
+
+const mapImages = [
+    postgreImage,
+    sqlserverImage,
+    mysqlImage,
+    oracleImage
+]
+
+const darkenBackground = {
+    backgroundColor: "#000000", 
+    opacity: 0.8
+};
+
+const useStyles = makeStyles(styles);
 
 const Connections = (props) => {
     const { auth, dispatch } = useAuth();
     const history = useHistory();
     const [connections, setConnections] = useState(null);
+    const classes = useStyles();
 
 
     let RequestConnections = {
@@ -82,47 +109,77 @@ const Connections = (props) => {
                    d-flex
                    align-items-center
                    justify-content-center
-                   text-myblue
+                   text-light
                    display-1
                    main-text">
                     Loading...
                 </div>
                 :
 
-                <Container fluid className=" flex-grow-1 align-content-center card-columns">
+                <Container className="align-content-center">
                     <Link to="/user/connections/add">
-                        <div className="card text-center rounded-lg shadow-sm bg-myblue text-mylightblack">
+                        {/* <div className="card text-center rounded-lg shadow-sm bg-light text-mylightblack">
                             <div className="card-header">
                                 <h5 className="card-title">Add Connection</h5>
                             </div>
-                            <div className="card-body bg-mylightblack text-myblue" style={{ fontSize: "8.25em" }}>
-                                <p className="card-text">+</p>
+                            <div className="card-body text-light" style={{ fontSize: "8.25em"}}>
+                                +
+                            <div className={classes.background} style={{ backgroundImage: "url(" + bgImage + ")", opacity: 0.8}}>
+                                <p className="card-text"></p>
                             </div>
-                        </div>
+                            </div>
+                        </div> */}
+                        <Card className={classes.root} style={{ marginBottom: 4 }}>
+                            <CardActionArea>
+                                <CardContent >
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        Add Connection
+                                     </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
                     </Link>
 
                     {
                         connections.map(connection => {
                             return (
-                                <div className="card text-center rounded-lg shadow-sm bg-myblue text-mylightblack" key={connection.connectionId}>
-                                    <div className="card-header">
-                                        <h5 className="card-title">{connection.host}: {connection.database}</h5>
-                                    </div>
-                                    <div className="card-body bg-mylightblack text-myblue">
-                                        <p className="card-text">Host: {connection.host}</p>
-                                        <p className="card-text">Database: {connection.database}</p>
-                                        <p className="card-text">User: {connection.username}</p>
-                                        <p className="card-text">SQL platform: {connection.sqlPlatform}</p>
-                                        <ButtonGroup>
+                                // <div className="card text-center rounded-lg shadow-sm bg-light text-mylightblack" key={connection.connectionId}>
+                                //     <div className="card-header">
+                                //         <h5 className="card-title">{connection.host}: {connection.database}</h5>
+                                //     </div>
+                                //     <div className="card-body bg-mylightblack text-light">
+                                //         <p className="card-text">Host: {connection.host}</p>
+                                //         <p className="card-text">Database: {connection.database}</p>
+                                //         <p className="card-text">User: {connection.username}</p>
+                                //         <p className="card-text">SQL platform: {connection.sqlPlatform}</p>
+                                //         <ButtonGroup className="border-light">
 
-                                            <Button className="bg-danger" onClick={(event) =>
-                                                DeleteConnection(connection.connectionId)}
-                                            >Delete</Button>
-                                            <Button className="bg-myblue text-mylightblack">Connect</Button>
-                                        </ButtonGroup>
-                                    </div>
-                                </div>
-
+                                //             <Button className="bg-danger" onClick={(event) =>
+                                //                 DeleteConnection(connection.connectionId)}
+                                //             >Delete</Button>
+                                //             <Button className="bg-light text-mylightblack">Connect</Button>
+                                //         </ButtonGroup>
+                                //     </div>
+                                // </div>
+                                <Card
+                                    className={`${classes.root} text-light`} 
+                                    style={{  
+                                                backgroundImage: "url(" + mapImages[connection.sqlPlatformId - 1] + ")",
+                                                backgroundSize: "cover",
+                                                backgroundPosition: "right"}}>
+                                        <CardActionArea style={darkenBackground}>
+                                            <CardContent >
+                                                <Typography gutterBottom variant="h5" component="h2">
+                                                    {connection.host}: {connection.database}
+                                                </Typography>
+                                                <Typography variant="body1" component="p">
+                                                    Host: {connection.host}<br />
+                                                    Database: {connection.database}<br />
+                                                    Username: {connection.username}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                </Card>
                             );
                         })
                     }

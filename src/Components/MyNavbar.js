@@ -21,7 +21,7 @@ function MyNavbar() {
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
                         {/* <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a> */}
-                        <Link to="/" className="nav-link text-myblue">Home</Link>
+                        <Link to="/" className="nav-link text-light">Home</Link>
                     </li>
                 </ul>
             </div>
@@ -31,7 +31,7 @@ function MyNavbar() {
                         <div className="btn-group btn-group-lg">
 
                             <button
-                                className="pull-right btn btn-mylightblack text-myblue"
+                                className="pull-right btn btn-mylightblack text-light"
                                 onClick={() => {
                                     history.push('/login');
                                     dispatch({ type: RESET_ERROR });
@@ -41,7 +41,7 @@ function MyNavbar() {
                             </button>
 
                             <button
-                                className="pull-right btn btn-mylightblack text-myblue"
+                                className="pull-right btn btn-mylightblack text-light"
                                 onClick={() => {
                                     history.push('/signup');
                                     dispatch({ type: RESET_ERROR });
@@ -53,13 +53,13 @@ function MyNavbar() {
                         :
                         <div className="btn-group btn-group-lg">
                             <button
-                                className="pull-right btn btn-mylightblack text-myblue"
+                                className="pull-right btn btn-purple text-light"
                                 onClick={() => { history.push('/user/connections') }}
                             >
                                 Connections
                             </button>
                             <button
-                                className="pull-right btn btn-mylightblack text-myblue"
+                                className="pull-right btn btn-mylightblack text-light"
                                 onClick={() => { dispatch({ type: LOGOUT }); history.push('/') }}
                             >
                                 Logout

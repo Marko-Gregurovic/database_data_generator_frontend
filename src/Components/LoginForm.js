@@ -75,7 +75,7 @@ const LoginForm = (props) => {
                 validationSchema={validationSchema}
             >
                 <div className="container">
-                    <div className="login-wrapper bg-mylightblack text-myblue" style={loginPageStyle}>
+                    <div className="login-wrapper bg-mylightblack text-light" style={loginPageStyle}>
                         <h2>Login Page</h2>
                         <Form className="form-container">
                             <div className="form-group">
@@ -92,7 +92,7 @@ const LoginForm = (props) => {
                                     {auth.message}
                                 </div>
                             }
-                            <button type="submit" className="pull-right btn btn-lg btn-myblue text-mylightblack">
+                            <button type="submit" className="pull-right btn btn-lg btn-light text-mylightblack">
                                 LOGIN
                         </button>
                         </Form>

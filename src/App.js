@@ -20,7 +20,6 @@ import {
 } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import AuthContextProvider, { AuthContext } from './context/auth';
-import LoginForm from './Components/LoginForm';
 import ConnectionsPage from './pages/ConnectionsPage';
 import AddConnectionPage from './pages/AddConnectionPage';
 
@@ -47,7 +46,7 @@ function App(props) {
           <Route exact path="/signup">
             <SignupPage />
           </Route>
-          <PrivateRoute path="/database" component={Database} />
+          <PrivateRoute path="/admin" component={Database} />
           <PrivateRoute exact path="/user/connections" component={ConnectionsPage} />
           <PrivateRoute path="/user/connections/add" component={AddConnectionPage} />
         </Switch>
