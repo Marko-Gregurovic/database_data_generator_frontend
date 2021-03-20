@@ -1,14 +1,14 @@
-import { LOGIN, LOGIN_ERROR, LOGOUT, SIGNUP_ERROR, RESET_ERROR } from './Actions';
+import * as Actions from './Actions';
 
 const Reducer = (state, action) => {
     switch (action.type) {
-        case RESET_ERROR:
+        case Actions.RESET_ERROR:
             return {
                 ...state,
                 isError: false,
                 message: null
             }
-        case LOGIN:
+        case Actions.LOGIN:
             return {
                 ...state,
                 isLoggedIn: true,
@@ -16,7 +16,7 @@ const Reducer = (state, action) => {
                 isError: false,
                 message: null
             }
-        case LOGOUT:
+        case Actions.LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,
@@ -24,15 +24,24 @@ const Reducer = (state, action) => {
                 isError: false,
                 message:null
             }
-        case LOGIN_ERROR:
-        case SIGNUP_ERROR:
+        case Actions.LOGIN_ERROR:
+        case Actions.SIGNUP_ERROR:
             return {
                 ...state,
                 isError: action.isError,
                 message: action.message
             }
-        case "DELETE_CONNECTION":
+        case Actions.DELETE_CONNECTION:
             return state;
+        case Actions.SET_DATABASE:
+            return({
+                ...state,
+                database: action.database,
+                databaseUsername: action.username,
+                tables: action.tables,
+                host: action.host
+
+            });
         default:
             break;
     }

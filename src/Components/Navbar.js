@@ -9,10 +9,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Hidden from "@material-ui/core/Hidden";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
+import { useAuth } from "context/auth";
 // core components
 import AdminNavbarLinks from "./AdminNavbarLinks.js";
-import RTLNavbarLinks from "./RTLNavbarLinks.js";
-import Button from "components/CustomButtons/Button.js";
+import Button from "components/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 
@@ -20,6 +20,7 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const classes = useStyles();
+  const { auth, dispatch } = useAuth();
   function makeBrand() {
     var name;
     props.routes.map(prop => {
@@ -41,10 +42,11 @@ export default function Header(props) {
           {/* Here we create navbar brand, based on route name */}
           <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
+            Tekst
           </Button>
         </div>
         <Hidden smDown implementation="css">
-          {<AdminNavbarLinks />}
+          {/* <AdminNavbarLinks /> */}
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton

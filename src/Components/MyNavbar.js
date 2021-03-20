@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import { LOGOUT, RESET_ERROR } from "../helpers/Actions";
 
-import logo from '../pictures/logo-1-71x71.png';
+import logo from 'assets/img/logo.png';
 
 function MyNavbar() {
     const { auth, dispatch } = useAuth();
@@ -20,8 +20,6 @@ function MyNavbar() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
-                        {/* <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a> */}
-                        <Link to="/" className="nav-link text-light">Home</Link>
                     </li>
                 </ul>
             </div>

@@ -11,7 +11,8 @@ const initialValues = {
   isError: false,
   isLoggedIn: false,
   token: null,
-  message: null
+  message: null,
+  database: null
 }
 
 const AuthContextProvider = ({children}) => {

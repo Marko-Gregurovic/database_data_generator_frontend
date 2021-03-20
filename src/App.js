@@ -8,8 +8,8 @@ import './custom.scss';
 
 import Homepage from './pages/Homepage';
 import Database from './pages/Database';
-import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 import {
   BrowserRouter as Router,
@@ -46,7 +46,7 @@ function App(props) {
           <Route exact path="/signup">
             <SignupPage />
           </Route>
-          <PrivateRoute path="/admin" component={Database} />
+          <PrivateRoute exact path="/user/database" component={Database} />
           <PrivateRoute exact path="/user/connections" component={ConnectionsPage} />
           <PrivateRoute path="/user/connections/add" component={AddConnectionPage} />
         </Switch>

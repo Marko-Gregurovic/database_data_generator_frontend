@@ -1,8 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import { useEffect, useState } from 'react';
-import { LOGOUT, RESET_ERROR } from "../helpers/Actions";
-import { Button, ButtonGroup, Container } from "react-bootstrap";
+import { LOGOUT, RESET_ERROR, SET_DATABASE } from "../helpers/Actions";
+import { Container } from "react-bootstrap";
 import { API_URL } from "../helpers/Constants";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -11,6 +11,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import oracleImage from "assets/img/bg_oracle.jpg";
 import postgreImage from "assets/img/bg_postgre.jpg";
@@ -27,7 +28,7 @@ const mapImages = [
 ]
 
 const darkenBackground = {
-    backgroundColor: "#000000", 
+    backgroundColor: "#000000",
     opacity: 0.8
 };
 
@@ -39,10 +40,6 @@ const Connections = (props) => {
     const [connections, setConnections] = useState(null);
     const classes = useStyles();
 
-
-    let RequestConnections = {
-        token: auth.token
-    };
 
     const DeleteConnection = (connectionId) => {
         let error = false;
@@ -68,6 +65,42 @@ const Connections = (props) => {
                     return;
                 }
                 setConnections(connections => connections.filter(connection => connection.connectionId !== connectionId))
+                return;
+            })
+    }
+
+
+    const Connect = (connectionId) => {
+        let error = false;
+        const REST_API_URL = API_URL + "/user/connections/connect";
+        fetch(REST_API_URL, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.token
+            },
+            body: connectionId
+        })
+            .then(response => {
+                if (!response.ok) {
+                    error = true
+                }
+                return response;
+            }).then(response => response.json())
+            .then(response => {
+                if (error) {
+                    dispatch({ type: LOGOUT, isError: true, message: response.message });
+                    alert("Invalid token. Logging you out.")
+                    return;
+                }
+
+                dispatch({type: SET_DATABASE, 
+                    tables: response.tables,
+                    host: response.host,
+                    database: response.database,
+                    username: response.username
+                })
+
                 return;
             })
     }
@@ -162,23 +195,37 @@ const Connections = (props) => {
                                 //     </div>
                                 // </div>
                                 <Card
-                                    className={`${classes.root} text-light`} 
-                                    style={{  
-                                                backgroundImage: "url(" + mapImages[connection.sqlPlatformId - 1] + ")",
-                                                backgroundSize: "cover",
-                                                backgroundPosition: "right"}}>
-                                        <CardActionArea style={darkenBackground}>
+                                    className={`${classes.root} text-light`}
+                                    style={{
+                                        backgroundImage: "url(" + mapImages[connection.sqlPlatformId - 1] + ")",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "right"
+                                    }}>
+                                    <div style={darkenBackground}>
+                                        <CardActionArea>
                                             <CardContent >
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {connection.host}: {connection.database}
                                                 </Typography>
                                                 <Typography variant="body1" component="p">
-                                                    Host: {connection.host}<br />
+                                                    Host: {connection.host}
+                                                    <br />
                                                     Database: {connection.database}<br />
                                                     Username: {connection.username}
                                                 </Typography>
                                             </CardContent>
                                         </CardActionArea>
+                                        <CardActions>
+                                            <Button size="small" color="inherit" onClick={(event) =>
+                                                Connect(connection.connectionId)}>
+                                                Connect
+                                        </Button>
+                                            <Button size="small" color="inherit" onClick={(event) =>
+                                                DeleteConnection(connection.connectionId)}>
+                                                Delete
+                                        </Button>
+                                        </CardActions>
+                                    </div>
                                 </Card>
                             );
                         })
