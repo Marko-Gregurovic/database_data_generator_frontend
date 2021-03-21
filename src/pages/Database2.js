@@ -5,78 +5,77 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// core components
-import Navbar from "components/Navbar.js";
-import Footer from "components/Footer.js";
-import Sidebar from "components/Sidebar.js";
 import { useAuth } from "context/auth";
-import TableChartIcon from "@material-ui/icons/TableChart"
+import Navbar from "components/Navbar.js";
+
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
+import Button from "components/Button.js";
+import Menu from "@material-ui/icons/Menu";
+import classNames from "classnames";
+
+import Sidebar from "components/Sidebar.js";
 
 // import routes from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
-import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
-import Table from "components/Table";
+import bgImage from "assets/img/sidebar.jpg";
+import logo from "assets/img/logo_inv.png";
+import { Colorize } from "@material-ui/icons";
 
 let ps;
+
+// const switchRoutes = (
+//   <Switch>
+//     {routes.map((prop, key) => {
+//       if (prop.layout === "/user/database") {
+//         return (
+//           <Route
+//             path={prop.layout + prop.path}
+//             component={prop.component}
+//             key={key}
+//           />
+//         );
+//       }
+//       return null;
+//     })}
+//   </Switch>
+// );
 
 
 
 const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
-
-  const { auth, dispatch } = useAuth();
-
-
-  const switchRoutes = (
-    <Switch>
-      {auth.tables.map((prop, key) => {
-        return (
-          <Route
-            path={"path"}
-            component={Table}
-            key={key}
-          />
-        );
-      })}
-    </Switch>
-  );
-
-
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
   // states and functions
+  //background image
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleImageClick = image => {
-    setImage(image);
-  };
-  const handleColorClick = color => {
-    setColor(color);
-  };
-  const handleFixedClick = () => {
-    if (fixedClasses === "dropdown") {
-      setFixedClasses("dropdown show");
-    } else {
-      setFixedClasses("dropdown");
-    }
-  };
+  const { auth, dispatch } = useAuth();
+
+
+  const appBarClasses = classNames({
+    [" " + classes[color]]: color
+  });
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-  const getRoute = () => {
-    return window.location.pathname !== "/admin/maps";
   };
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
       setMobileOpen(false);
+    } else {
+      setMobileOpen(true);
     }
   };
   // initialize and destroy the PerfectScrollbar plugin
@@ -100,7 +99,7 @@ export default function Admin({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        routes={[{ name: "test", layout: "/user/database", path: "/path", icon: TableChartIcon }]}
+        tables={[]}
         logoText={"Creative Tim"}
         logo={logo}
         image={image}
@@ -110,29 +109,37 @@ export default function Admin({ ...rest }) {
         {...rest}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
-          routes={[{ name: "dasd", layout: "/user/database", path: "/path", icon: TableChartIcon }]}
-          handleDrawerToggle={handleDrawerToggle}
-          {...rest}
-        />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-            <div className={classes.map}>{switchRoutes}</div>
-          )}
-        {getRoute() ? <Footer /> : null}
-        {/* <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          bgColor={color}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-        /> */}
+
+        <AppBar className={classes.appBar + appBarClasses}>
+          <Toolbar className={classes.container}>
+            <div className={classes.flex}>
+              {/* Here we create navbar brand, based on route name */}
+              <Button color="transparent" href="#" className={classes.title}>
+                Table
+              </Button>
+            </div>
+            <Hidden smDown implementation="css">
+              {/* <AdminNavbarLinks /> */}
+            </Hidden>
+            <Hidden mdUp implementation="css">
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerToggle}
+              >
+                <Menu />
+              </IconButton>
+            </Hidden>
+          </Toolbar>
+        </AppBar>
       </div>
     </div>
   );
 }
+
+Admin.propTypes = {
+  color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
+  rtlActive: PropTypes.bool,
+  handleDrawerToggle: PropTypes.func,
+  routes: PropTypes.arrayOf(PropTypes.object)
+};

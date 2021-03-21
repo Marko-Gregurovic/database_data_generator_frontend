@@ -22,13 +22,13 @@ export default function Header(props) {
   const classes = useStyles();
   const { auth, dispatch } = useAuth();
   function makeBrand() {
-    var name;
-    props.routes.map(prop => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        name = prop.name;
-      }
-      return null;
-    });
+    var name = "Table";
+    // props.routes.map(prop => {
+    //   if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+    //     name = prop.name;
+    //   }
+    //   return null;
+    // });
     return name;
   }
   const { color } = props;
@@ -42,7 +42,6 @@ export default function Header(props) {
           {/* Here we create navbar brand, based on route name */}
           <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
-            Tekst
           </Button>
         </div>
         <Hidden smDown implementation="css">

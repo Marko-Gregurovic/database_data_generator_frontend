@@ -46,7 +46,7 @@ function App(props) {
           <Route exact path="/signup">
             <SignupPage />
           </Route>
-          <PrivateRoute exact path="/user/database" component={Database} />
+          <PrivateRoute path="/user/database" component={Database} />
           <PrivateRoute exact path="/user/connections" component={ConnectionsPage} />
           <PrivateRoute path="/user/connections/add" component={AddConnectionPage} />
         </Switch>
