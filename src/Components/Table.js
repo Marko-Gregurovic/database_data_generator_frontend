@@ -1,7 +1,7 @@
 const Table = (props) => {
     let table = props.table;
     return <div>
-        Stuff for {table.name} goes here
+        Ovdje {table.name}
     </div>
 }
 

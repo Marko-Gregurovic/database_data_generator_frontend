@@ -43,6 +43,7 @@ export default function Admin({ ...rest }) {
       {auth.tables.map((prop, key) => {
         return (
           <Route
+            exact
             path={"/user/database/" + prop.name}
             render={props => (
               <Table table={prop} />
@@ -119,7 +120,7 @@ export default function Admin({ ...rest }) {
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
-          routes={[{ name: "dasd", layout: "/user/database", path: "/path", icon: TableChartIcon }]}
+          routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />

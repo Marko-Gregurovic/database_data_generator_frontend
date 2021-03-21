@@ -51,7 +51,7 @@ function MyNavbar() {
                         :
                         <div className="btn-group btn-group-lg">
                             <button
-                                className="pull-right btn btn-purple text-light"
+                                className="pull-right btn btn-myblue text-light"
                                 onClick={() => { history.push('/user/connections') }}
                             >
                                 Connections
