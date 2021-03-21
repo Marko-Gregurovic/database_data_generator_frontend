@@ -16,8 +16,8 @@ import TableChartIcon from "@material-ui/icons/TableChart"
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
-import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
+import bgImage from "assets/img/sidebar.jpg";
+import logo from "assets/img/logo_inv.png";
 import Table from "components/Table";
 
 let ps;
@@ -30,14 +30,23 @@ export default function Admin({ ...rest }) {
 
   const { auth, dispatch } = useAuth();
 
-
+  const routes = auth.tables.map((prop, key) => {
+    return({
+      name: prop.name,
+      layout: '/user/database',
+      path: '/' + prop.name,
+      icon: TableChartIcon
+    });
+  });
   const switchRoutes = (
     <Switch>
       {auth.tables.map((prop, key) => {
         return (
           <Route
-            path={"path"}
-            component={Table}
+            path={"/user/database/" + prop.name}
+            render={props => (
+              <Table table={prop} />
+            )}
             key={key}
           />
         );
@@ -100,8 +109,7 @@ export default function Admin({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        routes={[{ name: "test", layout: "/user/database", path: "/path", icon: TableChartIcon }]}
-        logoText={"Creative Tim"}
+        routes={routes}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
@@ -123,15 +131,7 @@ export default function Admin({ ...rest }) {
         ) : (
             <div className={classes.map}>{switchRoutes}</div>
           )}
-        {getRoute() ? <Footer /> : null}
-        {/* <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          bgColor={color}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-        /> */}
+        {/* {getRoute() ? <Footer /> : null} */}
       </div>
     </div>
   );

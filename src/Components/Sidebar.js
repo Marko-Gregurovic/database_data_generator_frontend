@@ -12,6 +12,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import TableChartIcon from "@material-ui/icons/TableChart"
+import { useAuth } from "context/auth";
 // core components
 // import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 // import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
@@ -21,12 +22,13 @@ import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
+  const { auth, dispatch } = useAuth();
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
-  const { color, logo, image, logoText, routes } = props;
+  const { color, logo, image, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
@@ -84,16 +86,16 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=mdr-sidebar"
+        href="/user/connections"
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}
-        target="_blank"
+        target="_self"
       >
         <div className={classes.logoImage}>
           <img src={logo} alt="logo" className={classes.img} />
         </div>
-        {logoText}
+        {auth.database}
       </a>
     </div>
   );

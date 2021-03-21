@@ -9,7 +9,7 @@ function PictureSlide() {
                        text-light
                        display-1
                        main-text">
-            Test you database faster with GenZo
+           
         </div>
         </div>
         

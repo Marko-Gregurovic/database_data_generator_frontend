@@ -22,7 +22,7 @@ const Reducer = (state, action) => {
                 isLoggedIn: false,
                 token: null,
                 isError: false,
-                message:null
+                message: null
             }
         case Actions.LOGIN_ERROR:
         case Actions.SIGNUP_ERROR:
@@ -34,13 +34,23 @@ const Reducer = (state, action) => {
         case Actions.DELETE_CONNECTION:
             return state;
         case Actions.SET_DATABASE:
-            return({
+            return ({
                 ...state,
                 database: action.database,
                 databaseUsername: action.username,
                 tables: action.tables,
                 host: action.host
 
+            });
+        case Actions.SET_ACTIVE_TABLE:
+            return state;
+        case Actions.CLEAR_DATABASE:
+            return({
+                ...state,
+                database: null,
+                databaseUsername: null,
+                tables: null,
+                host: null
             });
         default:
             break;

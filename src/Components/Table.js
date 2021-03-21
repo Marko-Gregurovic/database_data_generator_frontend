@@ -1,11 +1,7 @@
-const Table = () => {
+const Table = (props) => {
+    let table = props.table;
     return <div>
-        test sdasafas
-        asd
-        as
-        const [sad
-        as
-        d] = arrayToDestruct
+        Stuff for {table.name} goes here
     </div>
 }
 

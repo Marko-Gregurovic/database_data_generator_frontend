@@ -1,7 +1,7 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import { useEffect, useState } from 'react';
-import { LOGOUT, RESET_ERROR, SET_DATABASE } from "../helpers/Actions";
+import { LOGOUT, RESET_ERROR, SET_DATABASE, CLEAR_DATABASE } from "../helpers/Actions";
 import { Container } from "react-bootstrap";
 import { API_URL } from "../helpers/Constants";
 import { makeStyles } from "@material-ui/core/styles";
@@ -71,6 +71,7 @@ const Connections = (props) => {
 
 
     const Connect = (connectionId) => {
+        // dispatch({type: CLEAR_DATABASE})
         let error = false;
         const REST_API_URL = API_URL + "/user/connections/connect";
         fetch(REST_API_URL, {
@@ -89,8 +90,7 @@ const Connections = (props) => {
             }).then(response => response.json())
             .then(response => {
                 if (error) {
-                    dispatch({ type: LOGOUT, isError: true, message: response.message });
-                    alert("Invalid token. Logging you out.")
+                    alert("Could not connect to database")
                     return;
                 }
 
@@ -100,7 +100,7 @@ const Connections = (props) => {
                     database: response.database,
                     username: response.username
                 })
-
+                history.push("/user/database")
                 return;
             })
     }
@@ -216,8 +216,9 @@ const Connections = (props) => {
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions>
-                                            <Button size="small" color="inherit" onClick={(event) =>
-                                                Connect(connection.connectionId)}>
+                                            <Button size="small" color="inherit" onClick={(event) =>{
+                                                Connect(connection.connectionId);}
+                                             } >
                                                 Connect
                                         </Button>
                                             <Button size="small" color="inherit" onClick={(event) =>
