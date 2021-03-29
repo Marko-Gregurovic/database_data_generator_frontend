@@ -13,5 +13,9 @@ $theme-colors: (
 
 );
 
+.no-round {
+    border-radius: 0 !important;
+}
+
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";

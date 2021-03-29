@@ -179,7 +179,7 @@ const Connections = (props) => {
             connections.map(connection => {
               return (
                 <Card
-                  className={`${classes.root} text-light`}
+                  className={`${classes.root} text-light no-round`}
                   style={{
                     backgroundImage: "url(" + mapImages[connection.sqlPlatformId - 1] + ")",
                     backgroundSize: "cover",
