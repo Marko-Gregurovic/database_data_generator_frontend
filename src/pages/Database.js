@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -19,6 +19,7 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 import bgImage from "assets/img/sidebar.jpg";
 import logo from "assets/img/logo_inv.png";
 import Table from "components/Table";
+import { API_URL } from "helpers/Constants";
 
 let ps;
 
@@ -29,9 +30,20 @@ const useStyles = makeStyles(styles);
 export default function Admin({ ...rest }) {
 
   const { auth, dispatch } = useAuth();
+  const [stereotypes, setStereotypes] = useState([]);
+
+  React.useEffect(() => {
+    fetch(API_URL + "/Stereotype/withGenerationModes", {
+      method: 'get'
+    }).then(response => response.json())
+      .then(response => {
+        setStereotypes(response);
+      });
+  }, []);
+
 
   const routes = auth.tables.map((prop, key) => {
-    return({
+    return ({
       name: prop.name,
       layout: '/user/database',
       path: '/' + prop.name,
@@ -46,7 +58,7 @@ export default function Admin({ ...rest }) {
             exact
             path={"/user/database/" + prop.name}
             render={props => (
-              <Table table={prop} />
+              <Table table={prop} stereotypes={stereotypes} />
             )}
             key={key}
           />
