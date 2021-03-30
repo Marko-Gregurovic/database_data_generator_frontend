@@ -86,12 +86,10 @@ const TableForm = (props) => {
                                 return (
                                     <div className="d-flex justify-content-between" >
                                         <div className="form-group">
-                                            <Field type="string" name="host" placeholder="Host" className="form-control" />
-                                            <ErrorMessage name="host" component="div" />
+                                            {column.name}
                                         </div>
                                         <div className="form-group">
-                                            <Field type="string" name="database" placeholder="Database" className="form-control" />
-                                            <ErrorMessage name="database" component="div" />
+                                            {column.stereotypeName}
                                         </div>
                                         <div className="form-group">
                                             <Field type="string" name="username" placeholder="Username" className="form-control" />
