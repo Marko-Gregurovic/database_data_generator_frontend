@@ -100,7 +100,8 @@ const Connections = (props) => {
           tables: response.tables,
           host: response.host,
           database: response.database,
-          username: response.username
+          username: response.username,
+          connectionId: connectionId
         })
         history.push("/user/database")
         return;

@@ -39,8 +39,8 @@ const Reducer = (state, action) => {
                 database: action.database,
                 databaseUsername: action.username,
                 tables: action.tables,
-                host: action.host
-
+                host: action.host,
+                connectionId: action.connectionId
             });
         case Actions.SET_ACTIVE_TABLE:
             return state;
@@ -52,6 +52,12 @@ const Reducer = (state, action) => {
                 tables: null,
                 host: null
             });
+        case Actions.SAVE_TABLE_STATE:
+            let changedTable = state.tables.find(table => table.name === action.tableName);
+            changedTable = {...action.table};
+            console.log(changedTable);
+            console.log(state);
+            return state;
         default:
             break;
     }

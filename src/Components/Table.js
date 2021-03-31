@@ -2,23 +2,18 @@ import { Field, Form, withFormik, Formik, ErrorMessage } from 'formik';
 import Select from 'react-select'
 import * as Yup from 'yup';
 import { useAuth } from '../context/auth';
-import { LOGIN, LOGIN_ERROR } from '../helpers/Actions';
+import { LOGIN, LOGIN_ERROR, SAVE_TABLE_STATE } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { boolean } from 'yup';
 import { API_URL } from '../helpers/Constants';
+import { instanceOf } from 'prop-types';
 
 const validationSchema = Yup.object().shape({
-    username: Yup.string()
-        .required('Username is required'),
-    password: Yup.string()
-        .required('Password is required'),
-    host: Yup.string()
-        .required('Host is required'),
-    database: Yup.string()
-        .required('Database is required'),
 
 })
+
+
 
 const loginPageStyle = {
     margin: "32px auto 37px",
@@ -29,27 +24,89 @@ const loginPageStyle = {
     boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)"
 }
 
+let stereotypes;
+
+const getGenerationModesForStereotypeId = (stereotypeId) => {
+    let values = stereotypes.filter(stereo => stereo.stereotypeId === stereotypeId);
+    let modes = values[0].generationModes;
+    return modes;
+}
+
+const getInitialValues = (props) => {
+
+    // for every column
+    let columns = props.table.databaseColumns;
+    console.log(columns);
+    let initialValues = {};
+    for(let column of columns) {
+        // get generation mode, if no generation mode is specified select first one from appropriate stereotype
+        let generationModeId = column.generationModeId;
+        if(generationModeId === null){
+            generationModeId = getGenerationModesForStereotypeId(column.stereotypeId)[0].generationModeId;
+        }
+        initialValues = {
+            ...initialValues,
+            [column.name + "GenerationModeId"]: generationModeId
+        };
+    }
+    return (initialValues);
+}
+
+const processFormValues = (props, formValues) => {
+    let table = props.table;
+    let columns = table.databaseColumns;
+    console.log(props.table)
+    console.log(columns)
+    console.log(formValues)
+
+    //process generation modes
+    for(let key in formValues){
+        let columnName = key.substr(0, key.indexOf('G'));
+        let generationModeId = formValues[key];
+        
+        let correspondingColumn = columns.find(column => column.name === columnName);
+        correspondingColumn.generationModeId = generationModeId;
+        console.log(correspondingColumn)
+    }
+}
+
+const setGenerationModesAsInts = (table) => {
+    console.log(table);
+    let columns = table.databaseColumns;
+    console.log(columns)
+    for(let column of columns){
+        console.log(column)
+        if(typeof column.generationModeId === "string" || column.generationModeId instanceof String){
+            column.generationModeId = parseInt(column.generationModeId);
+        }
+    }
+}
+
 const TableForm = (props) => {
     const { auth, dispatch } = useAuth();
     const history = useHistory();
-    let error = false
-
-    let table = props.table
-    let stereotypes = props.stereotypes;
-
+    let error = false;
+    let table = props.table;
+    stereotypes = props.stereotypes;
+    console.log(auth);
+    console.log(table)
     return (
         <div
             className="main-text">
 
             <Formik
-                initialValues={{ host: "", database: "", username: "", password: "", sqlPlatformId: "1" }}
+                initialValues={getInitialValues(props)}
                 onSubmit={(values, { setSubmitting }) => {
-                    const REST_API_URL = API_URL + "/user/connections/add";
+                    processFormValues(props, values)
+                    setGenerationModesAsInts(table);
+                    dispatch({type: SAVE_TABLE_STATE, tableName: table.name, table: table});
+                    const REST_API_URL = API_URL + "/user/connections/save";
                     fetch(REST_API_URL, {
                         method: 'post',
                         body: JSON.stringify({
-                            ...values,
-                            token: auth.token
+                            tables: auth.tables,
+                            connectionId: auth.connectionId,
+                            database: auth.database
                         }),
                         headers: {
                             'Content-Type': 'application/json',
@@ -91,20 +148,23 @@ const TableForm = (props) => {
                                         <div className="form-group">
                                             {column.stereotypeName}
                                         </div>
-                                        <div className="form-group">
-                                            <Field type="string" name="username" placeholder="Username" className="form-control" />
+                                        {/* <div className="form-group">
+                                            <Field type="string" name={column.name + "Num"} placeholder="Username" className="form-control" />
                                             <ErrorMessage name="username" component="div" />
                                         </div>
                                         <div className="form-group">
                                             <Field type="password" name="password" placeholder="Password" className="form-control" />
                                             <ErrorMessage name="password" component="div" />
-                                        </div>
+                                        </div> */}
 
                                         <div className="form-group">
-                                            <Field name="sqlPlatformId" as="select" className="form-control" >
-
+                                            <Field name={column.name + "GenerationModeId"} as="select" className="form-control" >
                                                 {
-                                                    stereotypes.map(stereotype => <option value={stereotype.generationModeId} key={stereotype.generationModeId}>{stereotype.name}</option>)
+                                                    // console.log(column)
+                                                }
+                                                {
+                                                    getGenerationModesForStereotypeId(column.stereotypeId).map(gm => <option value={parseInt(gm.generationModeId)} key={gm.generationModeId}>{gm.name}</option>)
+                                                    // <option value={platform.sqlPlatformId} key={platform.sqlPlatformId}>{platform.name}</option>
                                                 }
                                             </Field>
                                         </div>
@@ -120,7 +180,7 @@ const TableForm = (props) => {
                             }
 
                                         <button type="submit" className="pull-right btn btn-lg btn-light text-mylightblack mt-4">
-                                            Save Connection
+                                            Save Table
                         </button>
                         </Form>
                     </div>
@@ -128,7 +188,7 @@ const TableForm = (props) => {
             </Formik >
 
 
-                <div>
+                {/* <div>
                     Columns in {table.name}:
         {table.databaseColumns.map(column => {
                     return (
@@ -137,7 +197,7 @@ const TableForm = (props) => {
                             {column.isForeign && <>is foreign key for column {column.foreignColumnName} in table {column.foreignTableName}</>}
                         </div>);
                 })}
-                </div>
+                </div> */}
 
 
         </div>

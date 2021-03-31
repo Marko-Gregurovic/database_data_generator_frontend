@@ -12,7 +12,8 @@ const initialValues = {
   isLoggedIn: false,
   token: null,
   message: null,
-  database: null
+  database: null,
+  connectionId: null
 }
 
 const AuthContextProvider = ({children}) => {
