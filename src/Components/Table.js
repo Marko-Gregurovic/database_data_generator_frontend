@@ -59,15 +59,29 @@ const processFormValues = (props, formValues) => {
     console.log(columns)
     console.log(formValues)
 
-    //process generation modes
+    //process data
     for(let key in formValues){
-        let columnName = key.substr(0, key.indexOf('G'));
-        let generationModeId = formValues[key];
-        
-        let correspondingColumn = columns.find(column => column.name === columnName);
-        correspondingColumn.generationModeId = generationModeId;
-        console.log(correspondingColumn)
+        let test;
+
+        // process generation modes
+        test = key.match(".*GenerationModeId")
+        if(test){
+            let columnName = key.substr(0, key.indexOf('G'));
+            let generationModeId = formValues[key];
+            
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.generationModeId = generationModeId;
+            continue;
+        }
+
+        // process number of columns to generate
+        test = key.match(".*NumberOfColumnsToGenerate")
+        if(test){
+            table.numberOfColumnsToGenerate = formValues[key];
+            continue;
+        }
     }
+
 }
 
 const setGenerationModesAsInts = (table) => {
@@ -128,8 +142,6 @@ const TableForm = (props) => {
                                 dispatch({ type: LOGIN_ERROR, isError: true, message: response.message });
                                 return;
                             }
-
-                            history.push("/user/connections")
                             return;
                         });
                 }}
@@ -139,6 +151,10 @@ const TableForm = (props) => {
                     <div className="login-wrapper bg-mylightblack text-light" style={loginPageStyle}>
                         <h2 className="p-4">{table.name}</h2>
                         <Form className="form-container mt-4">
+                            <div className="form-group">
+                                <Field type="number" name={table.name + "NumberOfColumnsToGenerate"} placeholder="Username" className="form-control" />
+                                <ErrorMessage name="username" component="div" />
+                            </div>
                             {table.databaseColumns.map(column => {
                                 return (
                                     <div className="d-flex justify-content-between" >
@@ -148,11 +164,8 @@ const TableForm = (props) => {
                                         <div className="form-group">
                                             {column.stereotypeName}
                                         </div>
+                                        
                                         {/* <div className="form-group">
-                                            <Field type="string" name={column.name + "Num"} placeholder="Username" className="form-control" />
-                                            <ErrorMessage name="username" component="div" />
-                                        </div>
-                                        <div className="form-group">
                                             <Field type="password" name="password" placeholder="Password" className="form-control" />
                                             <ErrorMessage name="password" component="div" />
                                         </div> */}

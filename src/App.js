@@ -4,6 +4,7 @@ import { Counter } from './features/counter/Counter';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.scss';
+import 'assets/css/material-dashboard-react.css'
 
 
 import Homepage from './pages/Homepage';
