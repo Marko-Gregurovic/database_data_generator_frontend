@@ -36,7 +36,6 @@ const getInitialValues = (props) => {
 
     // for every column
     let columns = props.table.databaseColumns;
-    console.log(columns);
     let initialValues = {};
     for(let column of columns) {
         // get generation mode, if no generation mode is specified select first one from appropriate stereotype
@@ -49,15 +48,20 @@ const getInitialValues = (props) => {
             [column.name + "GenerationModeId"]: generationModeId
         };
     }
+
+    // add number of columns to generate
+    initialValues = {
+        ...initialValues,
+        numberOfColumnsToGenerate: props.table.numberOfColumnsToGenerate
+    };
+
+
     return (initialValues);
 }
 
 const processFormValues = (props, formValues) => {
     let table = props.table;
     let columns = table.databaseColumns;
-    console.log(props.table)
-    console.log(columns)
-    console.log(formValues)
 
     //process data
     for(let key in formValues){
@@ -75,21 +79,14 @@ const processFormValues = (props, formValues) => {
         }
 
         // process number of columns to generate
-        test = key.match(".*NumberOfColumnsToGenerate")
-        if(test){
-            table.numberOfColumnsToGenerate = formValues[key];
-            continue;
-        }
+        table.numberOfColumnsToGenerate = formValues.numberOfColumnsToGenerate;
     }
 
 }
 
 const setGenerationModesAsInts = (table) => {
-    console.log(table);
     let columns = table.databaseColumns;
-    console.log(columns)
     for(let column of columns){
-        console.log(column)
         if(typeof column.generationModeId === "string" || column.generationModeId instanceof String){
             column.generationModeId = parseInt(column.generationModeId);
         }
@@ -102,8 +99,6 @@ const TableForm = (props) => {
     let error = false;
     let table = props.table;
     stereotypes = props.stereotypes;
-    console.log(auth);
-    console.log(table)
     return (
         <div
             className="main-text">
@@ -152,7 +147,7 @@ const TableForm = (props) => {
                         <h2 className="p-4">{table.name}</h2>
                         <Form className="form-container mt-4">
                             <div className="form-group">
-                                <Field type="number" name={table.name + "NumberOfColumnsToGenerate"} placeholder="Username" className="form-control" />
+                                <Field type="number" name="numberOfColumnsToGenerate" className="form-control" />
                                 <ErrorMessage name="username" component="div" />
                             </div>
                             {table.databaseColumns.map(column => {
