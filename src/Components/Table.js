@@ -95,6 +95,11 @@ const setGenerationModesAsInts = (table) => {
 
 const TableForm = (props) => {
     const { auth, dispatch } = useAuth();
+
+    useEffect(() => {
+        console.log(table)
+    }, []);
+
     const history = useHistory();
     let error = false;
     let table = props.table;

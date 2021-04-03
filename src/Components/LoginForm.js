@@ -4,7 +4,7 @@ import { useAuth } from '../context/auth';
 import { LOGIN, LOGIN_ERROR } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { boolean } from 'yup';
+import { API_URL } from '../helpers/Constants';
 
 const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -47,7 +47,7 @@ const LoginForm = (props) => {
             <Formik
                 initialValues={{ username: "", password: "" }}
                 onSubmit={(values, { setSubmitting }) => {
-                    const REST_API_URL = "https://localhost:44324/login/authenticate";
+                    const REST_API_URL = API_URL + "/login/authenticate";
                     fetch(REST_API_URL, {
                         method: 'post',
                         body: JSON.stringify(values),
