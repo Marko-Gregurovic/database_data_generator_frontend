@@ -1,10 +1,10 @@
-import { Field, Form, withFormik, Formik, ErrorMessage } from 'formik';
+import { Field, Form, withFormik, Formik, ErrorMessage, useFormikContext } from 'formik';
 import Select from 'react-select'
 import * as Yup from 'yup';
 import { useAuth } from '../context/auth';
 import { LOGIN, LOGIN_ERROR, SAVE_TABLE_STATE } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import { boolean } from 'yup';
 import { API_URL } from '../helpers/Constants';
 import { instanceOf } from 'prop-types';
@@ -12,6 +12,8 @@ import { instanceOf } from 'prop-types';
 const validationSchema = Yup.object().shape({
 
 })
+
+
 
 
 
@@ -94,15 +96,56 @@ const setGenerationModesAsInts = (table) => {
 }
 
 const TableForm = (props) => {
+    // const processFormValues = (props, formValues) => {
+    //     let table = props.table;
+    //     let columns = table.databaseColumns;
+    
+    //     //process data
+    //     for(let key in formValues){
+    //         let test;
+    
+    //         // process generation modes
+    //         test = key.match(".*GenerationModeId")
+    //         if(test){
+    //             let columnName = key.substr(0, key.indexOf('G'));
+    //             let generationModeId = formValues[key];
+                
+    //             let correspondingColumn = columns.find(column => column.name === columnName);
+    //             correspondingColumn.generationModeId = generationModeId;
+    //             continue;
+    //         }
+    
+    //         // process number of columns to generate
+    //         table.numberOfColumnsToGenerate = formValues.numberOfColumnsToGenerate;
+    //     }
+    
+    // }
+
+
     const { auth, dispatch } = useAuth();
 
-    useEffect(() => {
-        console.log(table)
-    }, []);
+    
+    // Reference to get form values
+    // const formRef = useRef();
+    
+    // const {values} = formRef ?? {};
+
+    // useEffect(() => {
+    //     console.log(values);
+    // }, [values]);
 
     const history = useHistory();
     let error = false;
     let table = props.table;
+
+    // useEffect(() => {
+    //     return () => {
+    //         processFormValues(props, formRef.current.values);
+    //         dispatch({type: SAVE_TABLE_STATE, tableName: table.name, table: table});
+
+    //     }
+    // }, []);
+    
     stereotypes = props.stereotypes;
     return (
         <div
@@ -110,6 +153,7 @@ const TableForm = (props) => {
 
             <Formik
                 initialValues={getInitialValues(props)}
+                // innerRef={formRef}
                 onSubmit={(values, { setSubmitting }) => {
                     processFormValues(props, values)
                     setGenerationModesAsInts(table);

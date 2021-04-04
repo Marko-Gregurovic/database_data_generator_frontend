@@ -13,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import TableChartIcon from "@material-ui/icons/TableChart"
 import { useAuth } from "context/auth";
+import { API_URL } from '../helpers/Constants';
 // core components
 // import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 // import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
@@ -23,6 +24,42 @@ const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
   const { auth, dispatch } = useAuth();
+
+  let error;
+  const generateAction = () => {
+    const REST_API_URL = API_URL + "/user/connections/generate";
+    fetch(REST_API_URL, {
+        method: 'post',
+        body: JSON.stringify({
+            tables: auth.tables,
+            connectionId: auth.connectionId,
+            database: auth.database
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + auth.token
+        }
+    }).then(response => {
+        if (!response.ok) {
+            error = true
+        }
+
+        return response;
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.error)
+                error = true;
+
+            if (error) {
+                dispatch({ type: LOGIN_ERROR, isError: true, message: response.message });
+                return;
+            }
+            return;
+        });
+  }
+
+
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
@@ -120,6 +157,11 @@ export default function Sidebar(props) {
           <div className={classes.sidebarWrapper}>
             {/* {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />} */}
             {links}
+            <List className={classes.list}>
+              <ListItem button className={classes.itemLink}>
+                <button className="btn btn-lg bg-myblue text-light text-center justifyc w-100" onClick={generateAction}>Generate</button>
+              </ListItem>
+            </List>
           </div>
           {image !== undefined ? (
             <div
@@ -141,7 +183,14 @@ export default function Sidebar(props) {
           }}
         >
           {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
+          <div className={classes.sidebarWrapper}>
+            {links}
+            <List className={classes.list}>
+              <ListItem button className={classes.itemLink}>
+                <button className="btn btn-lg bg-myblue text-light text-center justifyc w-100" onClick={generateAction}>Generate</button>
+              </ListItem>
+            </List>
+          </div>
           {image !== undefined ? (
             <div
               className={classes.background}
