@@ -11,11 +11,28 @@ import { instanceOf } from 'prop-types';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import { Button } from '@material-ui/core';
+import { Height } from '@material-ui/icons';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+// import black from '@material-ui/core/colors/';
+
 
 const validationSchema = Yup.object().shape({
 
 })
 
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#000000",
+      },
+      secondary: {
+        main: "#000000",
+      },
+    },
+  });
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -161,7 +178,7 @@ const TableForm = (props) => {
     return (
         <div
             className="main-text">
-
+            <ThemeProvider theme={theme}>
             <Formik
                 initialValues={getInitialValues(props)}
                 // innerRef={formRef}
@@ -202,105 +219,98 @@ const TableForm = (props) => {
                 }}
                 validationSchema={validationSchema}
             >
+                {formikProps => (
+
+                
+                <form className="form-container mt-4" onSubmit={formikProps.handleSubmit}>
+                    {/* <Field type="number" name="numberOfColumnsToGenerate" className="form-control" />
+                    <ErrorMessage name="username" component="div" /> */}
+                    <TextField
+                        name="numberOfColumnsToGenerate"
+                        label="Number of columns to generate"
+                        value={formikProps.values.numberOfColumnsToGenerate}
+                        onChange={formikProps.handleChange}
+                        variant="outlined"
+                        fullWidth
+                    />
                 <div className={classes.root}>
                     <Grid container spacing={1}>
                         {table.databaseColumns.map(column => {
                             return (
+                                <>
+                                <div style={{width:"100%", height: "2px"}} className="bg-primary mb-2 mt-2"></div>
                                 <Grid container item xs={12} spacing={3}>
                                     <React.Fragment>
                                         <Grid item xs={4}>
-                                            <Paper className={classes.paper}>
+                                            {/* <Paper className={classes.paper}>
                                                 {column.name}
-                                            </Paper>
+                                            </Paper> */}
+                                            <TextField
+                                                label="Column name"
+                                                value={column.name}
+                                                variant="filled"
+                                                fullWidth
+                                            ></TextField>
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <Paper className={classes.paper}>
-                                                {column.stereotypeName}
-                                            </Paper>
+                                        <TextField
+                                                label="Stereotype"
+                                                value={column.stereotypeName}
+                                                variant="filled"
+                                                fullWidth
+                                            ></TextField>
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <Paper className={classes.paper}>
-                                            <Field name={column.name + "GenerationModeId"} as="select" className="form-control" >
-{
-    getGenerationModesForStereotypeId(column.stereotypeId).map(gm => <option value={parseInt(gm.generationModeId)} key={gm.generationModeId}>{gm.name}</option>)
-    // <option value={platform.sqlPlatformId} key={platform.sqlPlatformId}>{platform.name}</option>
-}
-                </Field>
-                                            </Paper>
+                                            <TextField
+                                                id="standard-select-currency"
+                                                name={column.name + "GenerationModeId"}
+                                                select
+                                                label="Generation mode"
+                                                onChange={formikProps.handleChange}
+                                                variant="outlined"
+                                                value={formikProps.values[column.name  + "GenerationModeId"]}
+                                                fullWidth
+                                                >
+                                                {getGenerationModesForStereotypeId(column.stereotypeId).map((gm) => (
+                                                    <MenuItem key={gm.generationModeId} value={parseInt(gm.generationModeId)}>
+                                                        {gm.name}
+                                                    </MenuItem>
+                                                ))}
+                                                </TextField>
                                         </Grid>
+                                        {    column.stereotypeName === "int" && 
+                                            <>
+                                            <Grid item xs={4}>
+                                                <TextField
+                                                label="Min Value"
+                                                value={column.stereotypeName}
+                                                variant="outlined"
+                                                fullWidth
+                                                 ></TextField>
+                                            </Grid>
+
+                                            <Grid item xs={4}>
+                                                <TextField
+                                                label="Max Value"
+                                                value={column.stereotypeName}
+                                                variant="outlined"
+                                                fullWidth
+                                                ></TextField>
+                                             </Grid>
+                                             </>
+                                        }
                                     </React.Fragment>
                                 </Grid>
+                                </>
                             );})
                         }
                     </Grid>
                 </div>
-                
-                {/* <div className="container">
-                    <div className="login-wrapper bg-mylightblack text-light" style={loginPageStyle}>
-                        <h2 className="p-4">{table.name}</h2>
-                        <Form className="form-container mt-4">
-                            <div className="form-group">
-                                <Field type="number" name="numberOfColumnsToGenerate" className="form-control" />
-                                <ErrorMessage name="username" component="div" />
-                            </div>
-                            {table.databaseColumns.map(column => {
-                                return (
-                                    <div className="d-flex justify-content-between" >
-                                        <div className="form-group">
-                                            {column.name}
-                                        </div>
-                                        <div className="form-group">
-                                            {column.stereotypeName}
-                                        </div>
-                                        
-                                        <div className="form-group">
-                                            <Field type="password" name="password" placeholder="Password" className="form-control" />
-                                            <ErrorMessage name="password" component="div" />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <Field name={column.name + "GenerationModeId"} as="select" className="form-control" >
-                                                {
-                                                    // console.log(column)
-                                                }
-                                                {
-                                                    getGenerationModesForStereotypeId(column.stereotypeId).map(gm => <option value={parseInt(gm.generationModeId)} key={gm.generationModeId}>{gm.name}</option>)
-                                                    // <option value={platform.sqlPlatformId} key={platform.sqlPlatformId}>{platform.name}</option>
-                                                }
-                                            </Field>
-                                        </div>
-                                        {
-                                            auth.isError !== null && auth.message != null &&
-                                            <div className="alert alert-primary bg-mygray text-mylightblack" role="alert">
-                                                {auth.message}
-                                            </div>
-                                        }
-                                    </div>
-                                );
-                                })
-                            }
-
-                                        <button type="submit" className="pull-right btn btn-lg btn-light text-mylightblack mt-4">
-                                            Save Table
-                        </button>
-                        </Form>
-                    </div>
-                </div> */}
+                <Button variant="outlined" size="large" className="mt-2" type="sumbit">Save Table</Button>
+                </form>
+                )}
             </Formik >
-
-
-                {/* <div>
-                    Columns in {table.name}:
-        {table.databaseColumns.map(column => {
-                    return (
-                        <div>
-                            {column.name} {column.type} {column.isPrimary === true && <>primary key</>}
-                            {column.isForeign && <>is foreign key for column {column.foreignColumnName} in table {column.foreignTableName}</>}
-                        </div>);
-                })}
-                </div> */}
-
-
+            </ThemeProvider>
         </div>
     );
 }
