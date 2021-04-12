@@ -4,17 +4,29 @@ import * as Yup from 'yup';
 import { useAuth } from '../context/auth';
 import { LOGIN, LOGIN_ERROR, SAVE_TABLE_STATE } from '../helpers/Actions';
 import { Redirect, useHistory } from 'react-router-dom';
-import { useEffect, useState, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import { boolean } from 'yup';
 import { API_URL } from '../helpers/Constants';
 import { instanceOf } from 'prop-types';
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 const validationSchema = Yup.object().shape({
 
 })
 
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(1),
+      textAlign: "center",
+      color: theme.palette.text.secondary
+    }
+  }));
 
 
 const loginPageStyle = {
@@ -27,7 +39,6 @@ const loginPageStyle = {
 }
 
 let stereotypes;
-
 const getGenerationModesForStereotypeId = (stereotypeId) => {
     let values = stereotypes.filter(stereo => stereo.stereotypeId === stereotypeId);
     let modes = values[0].generationModes;
@@ -121,7 +132,7 @@ const TableForm = (props) => {
     
     // }
 
-
+    const classes = useStyles();
     const { auth, dispatch } = useAuth();
 
     
@@ -191,7 +202,40 @@ const TableForm = (props) => {
                 }}
                 validationSchema={validationSchema}
             >
-                <div className="container">
+                <div className={classes.root}>
+                    <Grid container spacing={1}>
+                        {table.databaseColumns.map(column => {
+                            return (
+                                <Grid container item xs={12} spacing={3}>
+                                    <React.Fragment>
+                                        <Grid item xs={4}>
+                                            <Paper className={classes.paper}>
+                                                {column.name}
+                                            </Paper>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Paper className={classes.paper}>
+                                                {column.stereotypeName}
+                                            </Paper>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Paper className={classes.paper}>
+                                            <Field name={column.name + "GenerationModeId"} as="select" className="form-control" >
+{
+    getGenerationModesForStereotypeId(column.stereotypeId).map(gm => <option value={parseInt(gm.generationModeId)} key={gm.generationModeId}>{gm.name}</option>)
+    // <option value={platform.sqlPlatformId} key={platform.sqlPlatformId}>{platform.name}</option>
+}
+                </Field>
+                                            </Paper>
+                                        </Grid>
+                                    </React.Fragment>
+                                </Grid>
+                            );})
+                        }
+                    </Grid>
+                </div>
+                
+                {/* <div className="container">
                     <div className="login-wrapper bg-mylightblack text-light" style={loginPageStyle}>
                         <h2 className="p-4">{table.name}</h2>
                         <Form className="form-container mt-4">
@@ -209,10 +253,10 @@ const TableForm = (props) => {
                                             {column.stereotypeName}
                                         </div>
                                         
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <Field type="password" name="password" placeholder="Password" className="form-control" />
                                             <ErrorMessage name="password" component="div" />
-                                        </div> */}
+                                        </div>
 
                                         <div className="form-group">
                                             <Field name={column.name + "GenerationModeId"} as="select" className="form-control" >
@@ -241,7 +285,7 @@ const TableForm = (props) => {
                         </button>
                         </Form>
                     </div>
-                </div>
+                </div> */}
             </Formik >
 
 
