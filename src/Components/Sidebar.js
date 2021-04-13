@@ -53,9 +53,10 @@ export default function Sidebar(props) {
                 error = true;
 
             if (error) {
-                dispatch({ type: LOGIN_ERROR, isError: true, message: response.message });
+                alert(response.message)
                 return;
             }
+            alert(response.message)
             return;
         });
   }

@@ -109,7 +109,7 @@ const processFormValues = (props, formValues) => {
         }
 
         // process number of columns to generate
-        table.numberOfColumnsToGenerate = formValues.numberOfColumnsToGenerate;
+        table.numberOfColumnsToGenerate = parseInt(formValues.numberOfColumnsToGenerate);
     }
 
 }
@@ -211,9 +211,10 @@ const TableForm = (props) => {
                                 error = true;
 
                             if (error) {
-                                dispatch({ type: LOGIN_ERROR, isError: true, message: response.message });
+                                alert(response.message)
                                 return;
                             }
+                            alert(response.message)
                             return;
                         });
                 }}
