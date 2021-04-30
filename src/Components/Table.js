@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from '@material-ui/core';
-import { Height } from '@material-ui/icons';
+import { ContactSupportRounded, Height } from '@material-ui/icons';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 // import black from '@material-ui/core/colors/';
 
@@ -98,9 +98,9 @@ const processFormValues = (props, formValues) => {
         let test;
 
         // process generation modes
-        test = key.match(".*GenerationModeId")
+        test = key.match(".*GenerationModeId");
         if(test){
-            let columnName = key.substr(0, key.indexOf('G'));
+            let columnName = key.substr(0, key.indexOf('GenerationModeId'));
             let generationModeId = formValues[key];
             
             let correspondingColumn = columns.find(column => column.name === columnName);
@@ -108,8 +108,35 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process min number
+        test = key.match(".*MinNumber");
+        if(test){
+            let columnName = key.substr(0, key.indexOf('MinNumber'));
+            let minNumber = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.minNumber = minNumber;
+            continue;
+        }
+
+        // process max number
+        test = key.match(".*MaxNumber");
+        if(test){
+            let columnName = key.substr(0, key.indexOf('MaxNumber'));
+            let maxNumber = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.maxNumber = maxNumber;
+            continue;
+        }
+
         // process number of columns to generate
-        table.numberOfColumnsToGenerate = parseInt(formValues.numberOfColumnsToGenerate);
+        test = key.match("numberOfColumnsToGenerate");
+        if(test){
+            table.numberOfColumnsToGenerate = parseInt(formValues.numberOfColumnsToGenerate);
+            continue;
+        }
+
     }
 
 }
@@ -236,13 +263,15 @@ const TableForm = (props) => {
                     />
                 <div className={classes.root}>
                     <Grid container spacing={1}>
+                        
                         {table.databaseColumns.map(column => {
+                            console.log(column)
                             return (
                                 <>
                                 <div style={{width:"100%", height: "2px"}} className="bg-primary mb-2 mt-2"></div>
                                 <Grid container item xs={12} spacing={3}>
                                     <React.Fragment>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={2}>
                                             {/* <Paper className={classes.paper}>
                                                 {column.name}
                                             </Paper> */}
@@ -253,7 +282,7 @@ const TableForm = (props) => {
                                                 fullWidth
                                             ></TextField>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={2}>
                                         <TextField
                                                 label="Stereotype"
                                                 value={column.stereotypeName}
@@ -261,7 +290,7 @@ const TableForm = (props) => {
                                                 fullWidth
                                             ></TextField>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={2}>
                                             <TextField
                                                 id="standard-select-currency"
                                                 name={column.name + "GenerationModeId"}
@@ -281,21 +310,27 @@ const TableForm = (props) => {
                                         </Grid>
                                         {    column.stereotypeName === "int" && 
                                             <>
-                                            <Grid item xs={4}>
+                                            <Grid item xs={2}>
                                                 <TextField
+                                                name={column.name + "MinNumber"}
                                                 label="Min Value"
-                                                value={column.stereotypeName}
+                                                defaultValue={column.minNumber}
                                                 variant="outlined"
                                                 fullWidth
+                                                onChange={formikProps.handleChange}
+                                                InputLabelProps={{ shrink: true }}  
                                                  ></TextField>
                                             </Grid>
 
-                                            <Grid item xs={4}>
+                                            <Grid item xs={2}>
                                                 <TextField
+                                                name={column.name + "MaxNumber"}
                                                 label="Max Value"
-                                                value={column.stereotypeName}
+                                                defaultValue={column.maxNumber}
                                                 variant="outlined"
                                                 fullWidth
+                                                onChange={formikProps.handleChange}
+                                                InputLabelProps={{ shrink: true }} 
                                                 ></TextField>
                                              </Grid>
                                              </>
