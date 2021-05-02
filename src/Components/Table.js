@@ -238,7 +238,20 @@ const TableForm = (props) => {
                                 error = true;
 
                             if (error) {
-                                alert(response.message)
+                                if(response.message){
+                                    alert(response.message);
+                                } else if (response.errors){
+                                    // Itterate through errors and put them into one string and the display
+                                    let errorString = "";
+                                    for(let error in response.errors){
+                                        let tableId = parseInt(error.substr(error.indexOf('[') + 1, 1));
+                                        let columnId = parseInt(error.substr(error.indexOf("[", error.indexOf("[") + 1) + 1, 1));
+                                        let paramenter = error.substring(error.lastIndexOf(".") + 1);
+                                        let message = response.errors[error][0];
+                                        errorString += `Invalid parameter in column '${table.databaseColumns[columnId].name}': ${paramenter}: ${message}\n`;
+                                    }
+                                    alert(errorString);
+                                }
                                 return;
                             }
                             alert(response.message)
