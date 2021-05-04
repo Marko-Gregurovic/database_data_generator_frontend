@@ -1,20 +1,15 @@
-import { Field, Form, withFormik, Formik, ErrorMessage, useFormikContext } from 'formik';
-import Select from 'react-select'
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../context/auth';
-import { LOGIN, LOGIN_ERROR, SAVE_TABLE_STATE } from '../helpers/Actions';
-import { Redirect, useHistory } from 'react-router-dom';
-import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
-import { boolean } from 'yup';
+import { SAVE_TABLE_STATE } from '../helpers/Actions';
+import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { API_URL } from '../helpers/Constants';
-import { instanceOf } from 'prop-types';
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from '@material-ui/core';
-import { ContactSupportRounded, Height } from '@material-ui/icons';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 // import black from '@material-ui/core/colors/';
 
@@ -44,16 +39,6 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary
     }
   }));
-
-
-const loginPageStyle = {
-    margin: "32px auto 37px",
-    // maxWidth: "530px",
-    background: "#fff",
-    padding: "30px",
-    borderRadius: "10px",
-    boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)"
-}
 
 let stereotypes;
 const getGenerationModesForStereotypeId = (stereotypeId) => {
@@ -89,6 +74,7 @@ const getInitialValues = (props) => {
     return (initialValues);
 }
 
+// Save values from formik to props
 const processFormValues = (props, formValues) => {
     let table = props.table;
     let columns = table.databaseColumns;
@@ -130,6 +116,30 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process dates
+
+        // process date from
+        test = key.match(".*DateFrom");
+        if(test){
+            let columnName = key.substr(0, key.indexOf('DateFrom'));
+            let dateFrom = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.dateFrom = dateFrom;
+            continue;
+        }
+
+        // process date to
+        test = key.match(".*DateTo");
+        if(test){
+            let columnName = key.substr(0, key.indexOf('DateTo'));
+            let dateTo = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.dateTo = dateTo;
+            continue;
+        }
+
         // process number of columns to generate
         test = key.match("numberOfColumnsToGenerate");
         if(test){
@@ -141,6 +151,7 @@ const processFormValues = (props, formValues) => {
 
 }
 
+// Turns strings that are received from form to ints for generation modes
 const setGenerationModesAsInts = (table) => {
     let columns = table.databaseColumns;
     for(let column of columns){
@@ -151,56 +162,14 @@ const setGenerationModesAsInts = (table) => {
 }
 
 const TableForm = (props) => {
-    // const processFormValues = (props, formValues) => {
-    //     let table = props.table;
-    //     let columns = table.databaseColumns;
-    
-    //     //process data
-    //     for(let key in formValues){
-    //         let test;
-    
-    //         // process generation modes
-    //         test = key.match(".*GenerationModeId")
-    //         if(test){
-    //             let columnName = key.substr(0, key.indexOf('G'));
-    //             let generationModeId = formValues[key];
-                
-    //             let correspondingColumn = columns.find(column => column.name === columnName);
-    //             correspondingColumn.generationModeId = generationModeId;
-    //             continue;
-    //         }
-    
-    //         // process number of columns to generate
-    //         table.numberOfColumnsToGenerate = formValues.numberOfColumnsToGenerate;
-    //     }
-    
-    // }
 
     const classes = useStyles();
     const { auth, dispatch } = useAuth();
-
-    
-    // Reference to get form values
-    // const formRef = useRef();
-    
-    // const {values} = formRef ?? {};
-
-    // useEffect(() => {
-    //     console.log(values);
-    // }, [values]);
 
     const history = useHistory();
     let error = false;
     let table = props.table;
 
-    // useEffect(() => {
-    //     return () => {
-    //         processFormValues(props, formRef.current.values);
-    //         dispatch({type: SAVE_TABLE_STATE, tableName: table.name, table: table});
-
-    //     }
-    // }, []);
-    
     stereotypes = props.stereotypes;
     return (
         <div
@@ -321,7 +290,7 @@ const TableForm = (props) => {
                                                 ))}
                                                 </TextField>
                                         </Grid>
-                                        {    column.stereotypeName === "int" && 
+                                        {    (column.stereotypeName === "int" || column.stereotypeName === "numbric") && 
                                             <>
                                             <Grid item xs={2}>
                                                 <TextField
@@ -342,6 +311,35 @@ const TableForm = (props) => {
                                                 defaultValue={column.maxNumber}
                                                 variant="outlined"
                                                 fullWidth
+                                                onChange={formikProps.handleChange}
+                                                InputLabelProps={{ shrink: true }} 
+                                                ></TextField>
+                                             </Grid>
+                                             </>
+                                        }
+                                        {    column.stereotypeName === "date" && 
+                                            <>
+                                            <Grid item xs={2}>
+                                                <TextField
+                                                name={column.name + "DateFrom"}
+                                                label="From date"
+                                                defaultValue={column.dateFrom}
+                                                variant="outlined"
+                                                fullWidth
+                                                placeholder="dd.mm.yyyy"
+                                                onChange={formikProps.handleChange}
+                                                InputLabelProps={{ shrink: true }}  
+                                                 ></TextField>
+                                            </Grid>
+
+                                            <Grid item xs={2}>
+                                                <TextField
+                                                name={column.name + "DateTo"}
+                                                label="To date"
+                                                defaultValue={column.dateTo}
+                                                variant="outlined"
+                                                fullWidth
+                                                placeholder="dd.mm.yyyy"
                                                 onChange={formikProps.handleChange}
                                                 InputLabelProps={{ shrink: true }} 
                                                 ></TextField>
