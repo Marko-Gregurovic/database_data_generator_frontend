@@ -177,9 +177,10 @@ const Connections = (props) => {
           </Link>
 
           {
-            connections.map(connection => {
+            connections.map((connection, index) => {
               return (
                 <Card
+                  key={index}
                   className={`${classes.root} text-light no-round`}
                   style={{
                     backgroundImage: "url(" + mapImages[connection.sqlPlatformId - 1] + ")",

@@ -162,9 +162,17 @@ const setGenerationModesAsInts = (table) => {
     }
 }
 
+function useForceUpdate(){
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update the state to force render
+}
+
+
 const TableForm = (props) => {
     const [isError, setError] = useState(false);
     const [errorText, setErrorText] = useState("There was an unexpected error");
+    //const forceUpdate = useForceUpdate();
+    const [forceUpdateValue, updateValue] = useState(0);
 
     const [isSuccess, setSuccess] = useState(false);
     const [successText, setSuccessText] = useState(false);
@@ -269,10 +277,10 @@ const TableForm = (props) => {
                             <div className={classes.root}>
                                 <Grid container spacing={1}>
 
-                                    {table.databaseColumns.map(column => {
+                                    {table.databaseColumns.map((column, index) => {
                                         console.log(column)
                                         return (
-                                            <>
+                                            <React.Fragment key={index}>
                                                 <div style={{ width: "100%", height: "2px" }} className="bg-primary mb-2 mt-2"></div>
                                                 <Grid container item xs={12} spacing={3}>
                                                     <React.Fragment>
@@ -301,7 +309,11 @@ const TableForm = (props) => {
                                                                 name={column.name + "GenerationModeId"}
                                                                 select
                                                                 label="Generation mode"
-                                                                onChange={formikProps.handleChange}
+                                                                onChange={(event) => {
+                                                                    formikProps.handleChange(event);
+                                                                    formikProps.values[event.target.name] = event.target.value;
+                                                                    processFormValues(props, formikProps.values);
+                                                                }}
                                                                 variant="outlined"
                                                                 value={formikProps.values[column.name + "GenerationModeId"]}
                                                                 fullWidth
@@ -313,7 +325,7 @@ const TableForm = (props) => {
                                                                 ))}
                                                             </TextField>
                                                         </Grid>
-                                                        {(column.stereotypeName === "int" || column.stereotypeName === "numeric") &&
+                                                        {(column.generationModeId == 17 || column.generationModeId == 13) &&
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -371,7 +383,7 @@ const TableForm = (props) => {
                                                         }
                                                     </React.Fragment>
                                                 </Grid>
-                                            </>
+                                            </React.Fragment>
                                         );
                                     })
                                     }
