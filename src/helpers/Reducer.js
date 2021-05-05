@@ -58,6 +58,11 @@ const Reducer = (state, action) => {
             console.log(changedTable);
             console.log(state);
             return state;
+        case Actions.SET_STEREOTYPES:
+            return({
+                ...state,
+                stereotypes: action.stereotypes
+            });
         default:
             break;
     }

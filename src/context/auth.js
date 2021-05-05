@@ -13,7 +13,8 @@ const initialValues = {
   token: null,
   message: null,
   database: null,
-  connectionId: null
+  connectionId: null,
+  stereotypes: null
 }
 
 const AuthContextProvider = ({children}) => {

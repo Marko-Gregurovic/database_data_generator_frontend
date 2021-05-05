@@ -176,7 +176,7 @@ const TableForm = (props) => {
     let error = false;
     let table = props.table;
 
-    stereotypes = props.stereotypes;
+    stereotypes = auth.stereotypes;
     return (
         <div
             className="main-text">
@@ -313,7 +313,7 @@ const TableForm = (props) => {
                                                                 ))}
                                                             </TextField>
                                                         </Grid>
-                                                        {(column.stereotypeName === "int" || column.stereotypeName === "numbric") &&
+                                                        {(column.stereotypeName === "int" || column.stereotypeName === "numeric") &&
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField

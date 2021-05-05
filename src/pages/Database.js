@@ -13,7 +13,7 @@ import { useAuth } from "context/auth";
 import TableChartIcon from "@material-ui/icons/TableChart"
 
 // import routes from "routes.js";
-
+import { SET_STEREOTYPES } from "../helpers/Actions";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar.jpg";
@@ -30,14 +30,19 @@ const useStyles = makeStyles(styles);
 export default function Admin({ ...rest }) {
 
   const { auth, dispatch } = useAuth();
-  const [stereotypes, setStereotypes] = useState([]);
+  // const [stereotypes, setStereotypes] = useState([]);
 
   React.useEffect(() => {
     fetch(API_URL + "/Stereotype/withGenerationModes", {
       method: 'get'
     }).then(response => response.json())
       .then(response => {
-        setStereotypes(response);
+        dispatch({
+
+          type: SET_STEREOTYPES,
+          stereotypes: response
+        });
+        // setStereotypes(response);
       });
   }, []);
 
@@ -58,7 +63,7 @@ export default function Admin({ ...rest }) {
             exact
             path={"/user/database/" + prop.name}
             render={props => (
-              <Table table={prop} stereotypes={stereotypes} />
+              <Table table={prop} /> //stereotypes={stereotypes} />
             )}
             key={key}
           />
