@@ -40,7 +40,8 @@ const Reducer = (state, action) => {
                 databaseUsername: action.username,
                 tables: action.tables,
                 host: action.host,
-                connectionId: action.connectionId
+                connectionId: action.connectionId,
+                databasePassword: action.databasePassword
             });
         case Actions.SET_ACTIVE_TABLE:
             return state;
@@ -55,8 +56,8 @@ const Reducer = (state, action) => {
         case Actions.SAVE_TABLE_STATE:
             let changedTable = state.tables.find(table => table.name === action.tableName);
             changedTable = {...action.table};
-            console.log(changedTable);
-            console.log(state);
+            // console.log(changedTable);
+            // console.log(state);
             return state;
         case Actions.SET_STEREOTYPES:
             return({

@@ -34,7 +34,8 @@ export default function Sidebar(props) {
         body: JSON.stringify({
             tables: auth.tables,
             connectionId: auth.connectionId,
-            database: auth.database
+            database: auth.database,
+            databasePassword: auth.databasePassword
         }),
         headers: {
             'Content-Type': 'application/json',

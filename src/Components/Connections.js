@@ -17,6 +17,7 @@ import oracleImage from "assets/img/bg_oracle.jpg";
 import postgreImage from "assets/img/bg_postgre.jpg";
 import mysqlImage from "assets/img/bg_mysql.jpg";
 import sqlserverImage from "assets/img/bg_sqlserver.jpg";
+import TextField from '@material-ui/core/TextField';
 
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import { CircularProgress } from "@material-ui/core";
@@ -40,7 +41,8 @@ const Connections = (props) => {
   const history = useHistory();
   const [connections, setConnections] = useState(null);
   const classes = useStyles();
-
+  // Map for password
+  const [passwords, setPasswords] = useState(new Map());
 
   const DeleteConnection = (connectionId) => {
     let error = false;
@@ -65,23 +67,28 @@ const Connections = (props) => {
           alert("Invalid token. Logging you out.")
           return;
         }
+        //Remove the now deleted connection from cache
         setConnections(connections => connections.filter(connection => connection.connectionId !== connectionId))
         return;
       })
   }
 
 
-  const Connect = (connectionId) => {
+  const Connect = (connectionId, password) => {
     // dispatch({type: CLEAR_DATABASE})
     let error = false;
     const REST_API_URL = API_URL + "/user/connections/connect";
+    if(password == null){
+      alert("Could not connect to database")
+          return;
+    }
     fetch(REST_API_URL, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + auth.token
       },
-      body: connectionId
+      body: JSON.stringify({connectionId: connectionId, password: password})
     })
       .then(response => {
         if (!response.ok) {
@@ -91,7 +98,7 @@ const Connections = (props) => {
       }).then(response => response.json())
       .then(response => {
         if (error) {
-          alert("Could not connect to database")
+          alert(response.message || "Could not connect to database")
           return;
         }
 
@@ -101,7 +108,8 @@ const Connections = (props) => {
           host: response.host,
           database: response.database,
           username: response.username,
-          connectionId: connectionId
+          connectionId: connectionId,
+          databasePassword: password
         })
         history.push("/user/database")
         return;
@@ -202,8 +210,17 @@ const Connections = (props) => {
                       </CardContent>
                     </CardActionArea>
                     <CardActions>
+                    <TextField
+                          label="Password"
+                          variant="filled"
+                          name={connection.connectionId + "Password"}
+                          value={passwords.get(connection.connectionId)}
+                          onChange={event => 
+                            setPasswords(prev => new Map([...prev, [connection.connectionId, event.target.value]])
+                          )}
+                        ></TextField>
                       <Button size="medium" variant="contained" onClick={(event) => {
-                        Connect(connection.connectionId);
+                        Connect(connection.connectionId, passwords.get(connection.connectionId));
                       }
                       } >
                         Connect

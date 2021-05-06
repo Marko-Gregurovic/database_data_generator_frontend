@@ -14,7 +14,8 @@ const initialValues = {
   message: null,
   database: null,
   connectionId: null,
-  stereotypes: null
+  stereotypes: null,
+  databasePassword: null
 }
 
 const AuthContextProvider = ({children}) => {

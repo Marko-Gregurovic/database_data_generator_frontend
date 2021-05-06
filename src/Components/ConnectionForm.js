@@ -11,8 +11,6 @@ import { API_URL } from '../helpers/Constants';
 const validationSchema = Yup.object().shape({
     username: Yup.string()
         .required('Username is required'),
-    password: Yup.string()
-        .required('Password is required'),
     host: Yup.string()
         .required('Host is required'),
     database: Yup.string()
@@ -57,15 +55,12 @@ const ConnectionForm = (props) => {
             className="main-text">
 
             <Formik
-                initialValues={{ host: "", database: "", username: "", password: "", sqlPlatformId: "1" }}
+                initialValues={{ host: "", database: "", username: "", sqlPlatformId: "1" }}
                 onSubmit={(values, { setSubmitting }) => {
                     const REST_API_URL = API_URL + "/user/connections/add";
                     fetch(REST_API_URL, {
                         method: 'post',
-                        body: JSON.stringify({
-                            ...values,
-                            token: auth.token
-                        }),
+                        body: JSON.stringify(values),
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer ' + auth.token
@@ -108,10 +103,6 @@ const ConnectionForm = (props) => {
                             <div className="form-group">
                                 <Field type="string" name="username" placeholder="Username" className="form-control" />
                                 <ErrorMessage name="username" component="div" />
-                            </div>
-                            <div className="form-group">
-                                <Field type="password" name="password" placeholder="Password" className="form-control" />
-                                <ErrorMessage name="password" component="div" />
                             </div>
                             {/* <div className="form-group">
                                 <Select name="sqlPlatforms" defaultValue={sqlPlatforms[0]} options={sqlPlatforms} className="text-dark" />
