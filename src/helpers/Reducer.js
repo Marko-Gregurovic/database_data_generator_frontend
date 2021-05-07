@@ -51,7 +51,8 @@ const Reducer = (state, action) => {
                 database: null,
                 databaseUsername: null,
                 tables: null,
-                host: null
+                host: null,
+                databasePassword: null
             });
         case Actions.SAVE_TABLE_STATE:
             let changedTable = state.tables.find(table => table.name === action.tableName);

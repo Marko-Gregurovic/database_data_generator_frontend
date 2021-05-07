@@ -141,6 +141,28 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process time from
+        test = key.match(".*TimeFrom");
+        if (test) {
+            let columnName = key.substr(0, key.indexOf('TimeFrom'));
+            let timeFrom = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.timeFrom = timeFrom;
+            continue;
+        }
+
+        // process time to
+        test = key.match(".*TimeTo");
+        if (test) {
+            let columnName = key.substr(0, key.indexOf('TimeTo'));
+            let timeTo = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.timeTo = timeTo;
+            continue;
+        }
+
         // process number of columns to generate
         test = key.match("numberOfColumnsToGenerate");
         if (test) {
@@ -268,7 +290,7 @@ const TableForm = (props) => {
                             }
                             <TextField
                                 name="numberOfColumnsToGenerate"
-                                label="Number of columns to generate"
+                                label="Number of rows to generate"
                                 value={formikProps.values.numberOfColumnsToGenerate}
                                 onChange={formikProps.handleChange}
                                 variant="outlined"
@@ -352,7 +374,7 @@ const TableForm = (props) => {
                                                                 </Grid>
                                                             </>
                                                         }
-                                                        {column.stereotypeName === "date" &&
+                                                        {(column.generationModeId == 10 || column.generationModeId == 12) &&  // date random from interval or timestamp random from interval
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -375,6 +397,36 @@ const TableForm = (props) => {
                                                                         variant="outlined"
                                                                         fullWidth
                                                                         placeholder="dd.mm.yyyy"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                            </>
+                                                        }
+                                                        {
+                                                            column.generationModeId == 12 && // timestamp random from interval
+                                                            <>
+                                                                <Grid item xs={1}>
+                                                                    <TextField
+                                                                        name={column.name + "TimeFrom"}
+                                                                        label="Time from"
+                                                                        defaultValue={column.timeFrom}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="hh:mm:ss"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+
+                                                                <Grid item xs={1}>
+                                                                    <TextField
+                                                                        name={column.name + "TimeTo"}
+                                                                        label="Time to"
+                                                                        defaultValue={column.timeTo}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="hh:mm:ss"
                                                                         onChange={formikProps.handleChange}
                                                                         InputLabelProps={{ shrink: true }}
                                                                     ></TextField>
