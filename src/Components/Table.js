@@ -347,7 +347,7 @@ const TableForm = (props) => {
                                                                 ))}
                                                             </TextField>
                                                         </Grid>
-                                                        {(column.generationModeId == 17 || column.generationModeId == 13) &&
+                                                        {(column.generationModeId == 17 || column.generationModeId == 13 || column.generationModeId == 11) &&
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -365,6 +365,21 @@ const TableForm = (props) => {
                                                                     <TextField
                                                                         name={column.name + "MaxNumber"}
                                                                         label="Max Value"
+                                                                        defaultValue={column.maxNumber}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                            </>
+                                                        }
+                                                        {(column.stereotypeName == "varchar") &&
+                                                            <>
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "MaxNumber"}
+                                                                        label="Max number of characters"
                                                                         defaultValue={column.maxNumber}
                                                                         variant="outlined"
                                                                         fullWidth
@@ -404,7 +419,7 @@ const TableForm = (props) => {
                                                             </>
                                                         }
                                                         {
-                                                            column.generationModeId == 12 && // timestamp random from interval
+                                                            (column.generationModeId == 12 || column.generationModeId == 14) && // timestamp random from interval
                                                             <>
                                                                 <Grid item xs={1}>
                                                                     <TextField
