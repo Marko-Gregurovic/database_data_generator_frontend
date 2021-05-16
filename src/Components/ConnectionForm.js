@@ -15,6 +15,8 @@ const validationSchema = Yup.object().shape({
         .required('Host is required'),
     database: Yup.string()
         .required('Database is required'),
+    port: Yup.number().min(1000, "Invalid port")
+            .max(65535, "Invalid port").required()
     
 })
 
@@ -103,6 +105,10 @@ const ConnectionForm = (props) => {
                             <div className="form-group">
                                 <Field type="string" name="username" placeholder="Username" className="form-control" />
                                 <ErrorMessage name="username" component="div" />
+                            </div>
+                            <div className="form-group">
+                                <Field type="number" name="port" placeholder="Port" className="form-control" />
+                                <ErrorMessage name="port" component="div" />
                             </div>
                             {/* <div className="form-group">
                                 <Select name="sqlPlatforms" defaultValue={sqlPlatforms[0]} options={sqlPlatforms} className="text-dark" />

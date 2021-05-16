@@ -24,7 +24,7 @@ import { CircularProgress } from "@material-ui/core";
 
 const mapImages = [
   postgreImage,
-  sqlserverImage,
+  // sqlserverImage,
   mysqlImage,
   oracleImage
 ]
@@ -204,8 +204,9 @@ const Connections = (props) => {
                         <Typography variant="body1" component="p">
                           Host: {connection.host}
                           <br />
-                                          Database: {connection.database}<br />
-                                          Username: {connection.username}
+                          Database: {connection.database}<br />
+                          Username: {connection.username}<br />
+                          Port: {connection.port}
                         </Typography>
                       </CardContent>
                     </CardActionArea>
