@@ -174,6 +174,17 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process after column
+        test = key.match(".*AfterColumn");
+        if (test) {
+            let columnName = key.substr(0, key.indexOf('AfterColumn'));
+            let afterColumn = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.afterColumn = afterColumn;
+            continue;
+        }
+
         // process number of columns to generate
         test = key.match("numberOfColumnsToGenerate");
         if (test) {
@@ -400,7 +411,50 @@ const TableForm = (props) => {
                                                                 </Grid>
                                                             </>
                                                         }
-                                                        {(column.generationModeId == 10 || column.generationModeId == 12) &&  // date random from interval or timestamp random from interval
+                                                        {(column.generationModeId == 10) &&  // date random from interval
+                                                            <>
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "DateFrom"}
+                                                                        label="From date"
+                                                                        defaultValue={column.dateFrom}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="dd.mm.yyyy"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "DateTo"}
+                                                                        label="To date"
+                                                                        defaultValue={column.dateTo}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="dd.mm.yyyy"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "AfterColumn"}
+                                                                        label="Greater then date"
+                                                                        defaultValue={column.afterColumn}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="Other date column"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+
+                                                            </>
+                                                        }
+                                                        {(column.generationModeId == 12) &&  // timestamp random from interval
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -460,9 +514,9 @@ const TableForm = (props) => {
                                                             </>
                                                         }
                                                         {
-                                                            (column.generationModeId == 18) && // timestamp random from interval
+                                                            (column.generationModeId == 18) && // pattern
                                                             <>
-                                                                <Grid item xs={3}>
+                                                                <Grid item xs={4}>
                                                                     <TextField
                                                                         name={column.name + "Pattern"}
                                                                         label="Pattern"
