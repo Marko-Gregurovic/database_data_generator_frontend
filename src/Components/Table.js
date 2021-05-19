@@ -163,6 +163,17 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process pattern
+        test = key.match(".*Pattern");
+        if (test) {
+            let columnName = key.substr(0, key.indexOf('Pattern'));
+            let pattern = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.pattern = pattern;
+            continue;
+        }
+
         // process number of columns to generate
         test = key.match("numberOfColumnsToGenerate");
         if (test) {
@@ -442,6 +453,24 @@ const TableForm = (props) => {
                                                                         variant="outlined"
                                                                         fullWidth
                                                                         placeholder="hh:mm:ss"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                            </>
+                                                        }
+                                                        {
+                                                            (column.generationModeId == 18) && // timestamp random from interval
+                                                            <>
+                                                                <Grid item xs={3}>
+                                                                    <TextField
+                                                                        name={column.name + "Pattern"}
+                                                                        label="Pattern"
+                                                                        defaultValue={column.pattern}
+                                                                        variant="outlined"
+                                                                        multiline
+                                                                        fullWidth
+                                                                        placeholder="Pattern"
                                                                         onChange={formikProps.handleChange}
                                                                         InputLabelProps={{ shrink: true }}
                                                                     ></TextField>
