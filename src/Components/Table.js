@@ -185,6 +185,17 @@ const processFormValues = (props, formValues) => {
             continue;
         }
 
+        // process operation
+        test = key.match(".*Relation");
+        if (test) {
+            let columnName = key.substr(0, key.indexOf('Relation'));
+            let relation = formValues[key];
+
+            let correspondingColumn = columns.find(column => column.name === columnName);
+            correspondingColumn.relation = relation;
+            continue;
+        }
+
         // process number of columns to generate
         test = key.match("numberOfColumnsToGenerate");
         if (test) {
@@ -349,7 +360,6 @@ const TableForm = (props) => {
                                                         </Grid>
                                                         <Grid item xs={2}>
                                                             <TextField
-                                                                id="standard-select-currency"
                                                                 name={column.name + "GenerationModeId"}
                                                                 select
                                                                 label="Generation mode"
@@ -442,7 +452,7 @@ const TableForm = (props) => {
                                                                 <Grid item xs={2}>
                                                                     <TextField
                                                                         name={column.name + "AfterColumn"}
-                                                                        label="Greater then date"
+                                                                        label="Other column"
                                                                         defaultValue={column.afterColumn}
                                                                         variant="outlined"
                                                                         fullWidth
@@ -450,6 +460,33 @@ const TableForm = (props) => {
                                                                         onChange={formikProps.handleChange}
                                                                         InputLabelProps={{ shrink: true }}
                                                                     ></TextField>
+                                                                </Grid>
+                                                                <Grid item xs={2}>
+                                                                
+                                                                    <TextField
+                                                                        name={column.name + "Relation"}
+                                                                        select
+                                                                        fullWidth
+                                                                        label="Relation to other column"
+                                                                        onChange={(event) => {
+                                                                            formikProps.handleChange(event);
+                                                                            formikProps.values[event.target.name] = event.target.value;
+                                                                            processFormValues(props, formikProps.values);
+                                                                        }}
+                                                                        variant="outlined"
+                                                                        value={formikProps.values[column.name + "Relation"]}
+                                                                    >
+                                                                        <MenuItem key="greater" value="greater">Greater then</MenuItem>
+                                                                        <MenuItem key="lesser" value="lesser">Lesser then</MenuItem>
+                                                                        <MenuItem key="equal" value="equal">Equal</MenuItem>
+                                                                        <MenuItem key="notequal" value="notequal">Not equal</MenuItem>
+
+                                                                        {/* {getGenerationModesForStereotypeId(column.stereotypeId).map((gm) => (
+                                                                            <MenuItem key={gm.generationModeId} value={parseInt(gm.generationModeId)}>
+                                                                                {gm.name}
+                                                                            </MenuItem>
+                                                                        ))} */}
+                                                                    </TextField>
                                                                 </Grid>
 
                                                             </>
