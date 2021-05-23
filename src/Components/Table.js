@@ -476,10 +476,12 @@ const TableForm = (props) => {
                                                                         variant="outlined"
                                                                         value={formikProps.values[column.name + "Relation"]}
                                                                     >
-                                                                        <MenuItem key="greater" value="greater">Greater then</MenuItem>
-                                                                        <MenuItem key="lesser" value="lesser">Lesser then</MenuItem>
-                                                                        <MenuItem key="equal" value="equal">Equal</MenuItem>
+                                                                        <MenuItem key="lesser" value="lesser">Lesser than</MenuItem>
+                                                                        <MenuItem key="lesserorequal" value="lesserorequal">Lesser than or equal</MenuItem>
                                                                         <MenuItem key="notequal" value="notequal">Not equal</MenuItem>
+                                                                        <MenuItem key="equal" value="equal">Equal</MenuItem>
+                                                                        <MenuItem key="greaterorequal" value="greaterorequal">Greater than or equal</MenuItem>
+                                                                        <MenuItem key="greater" value="greater">Greater than</MenuItem>
 
                                                                         {/* {getGenerationModesForStereotypeId(column.stereotypeId).map((gm) => (
                                                                             <MenuItem key={gm.generationModeId} value={parseInt(gm.generationModeId)}>
