@@ -175,13 +175,13 @@ const processFormValues = (props, formValues) => {
         }
 
         // process after column
-        test = key.match(".*AfterColumn");
+        test = key.match(".*RelatedColumn");
         if (test) {
-            let columnName = key.substr(0, key.indexOf('AfterColumn'));
-            let afterColumn = formValues[key];
+            let columnName = key.substr(0, key.indexOf('RelatedColumn'));
+            let relatedColumn = formValues[key];
 
             let correspondingColumn = columns.find(column => column.name === columnName);
-            correspondingColumn.afterColumn = afterColumn;
+            correspondingColumn.relatedColumn = relatedColumn;
             continue;
         }
 
@@ -451,12 +451,12 @@ const TableForm = (props) => {
 
                                                                 <Grid item xs={2}>
                                                                     <TextField
-                                                                        name={column.name + "AfterColumn"}
-                                                                        label="Other column"
-                                                                        defaultValue={column.afterColumn}
+                                                                        name={column.name + "RelatedColumn"}
+                                                                        label="Related column"
+                                                                        defaultValue={column.relatedColumn}
                                                                         variant="outlined"
                                                                         fullWidth
-                                                                        placeholder="Other date column"
+                                                                        placeholder="Related column"
                                                                         onChange={formikProps.handleChange}
                                                                         InputLabelProps={{ shrink: true }}
                                                                     ></TextField>
