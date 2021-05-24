@@ -63,7 +63,15 @@ const getInitialValues = (props) => {
             ...initialValues,
             [column.name + "GenerationModeId"]: generationModeId
         };
+
+        // set relation
+        initialValues = {
+            ...initialValues,
+            [column.name + "Relation"]: column.relation
+        }
     }
+
+
 
     // add number of columns to generate
     initialValues = {
@@ -449,48 +457,7 @@ const TableForm = (props) => {
                                                                     ></TextField>
                                                                 </Grid>
 
-                                                                <Grid item xs={2}>
-                                                                    <TextField
-                                                                        name={column.name + "RelatedColumn"}
-                                                                        label="Related column"
-                                                                        defaultValue={column.relatedColumn}
-                                                                        variant="outlined"
-                                                                        fullWidth
-                                                                        placeholder="Related column"
-                                                                        onChange={formikProps.handleChange}
-                                                                        InputLabelProps={{ shrink: true }}
-                                                                    ></TextField>
-                                                                </Grid>
-                                                                <Grid item xs={2}>
                                                                 
-                                                                    <TextField
-                                                                        name={column.name + "Relation"}
-                                                                        select
-                                                                        fullWidth
-                                                                        label="Relation to other column"
-                                                                        onChange={(event) => {
-                                                                            formikProps.handleChange(event);
-                                                                            formikProps.values[event.target.name] = event.target.value;
-                                                                            processFormValues(props, formikProps.values);
-                                                                        }}
-                                                                        variant="outlined"
-                                                                        value={formikProps.values[column.name + "Relation"]}
-                                                                    >
-                                                                        <MenuItem key="lesser" value="lesser">Lesser than</MenuItem>
-                                                                        <MenuItem key="lesserorequal" value="lesserorequal">Lesser than or equal</MenuItem>
-                                                                        <MenuItem key="notequal" value="notequal">Not equal</MenuItem>
-                                                                        <MenuItem key="equal" value="equal">Equal</MenuItem>
-                                                                        <MenuItem key="greaterorequal" value="greaterorequal">Greater than or equal</MenuItem>
-                                                                        <MenuItem key="greater" value="greater">Greater than</MenuItem>
-
-                                                                        {/* {getGenerationModesForStereotypeId(column.stereotypeId).map((gm) => (
-                                                                            <MenuItem key={gm.generationModeId} value={parseInt(gm.generationModeId)}>
-                                                                                {gm.name}
-                                                                            </MenuItem>
-                                                                        ))} */}
-                                                                    </TextField>
-                                                                </Grid>
-
                                                             </>
                                                         }
                                                         {(column.generationModeId == 12) &&  // timestamp random from interval
@@ -567,6 +534,48 @@ const TableForm = (props) => {
                                                                         onChange={formikProps.handleChange}
                                                                         InputLabelProps={{ shrink: true }}
                                                                     ></TextField>
+                                                                </Grid>
+                                                            </>
+                                                        }
+                                                        {
+                                                            (column.generationModeId == 17 || 
+                                                                column.generationModeId == 10 ||
+                                                                column.generationModeId == 13) &&
+                                                            <>
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "RelatedColumn"}
+                                                                        label="Related column"
+                                                                        defaultValue={column.relatedColumn}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        placeholder="Related column"
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                                <Grid item xs={2}>
+                                                                
+                                                                    <TextField
+                                                                        name={column.name + "Relation"}
+                                                                        select
+                                                                        fullWidth
+                                                                        label="Relation to other column"
+                                                                        onChange={(event) => {
+                                                                            formikProps.handleChange(event);
+                                                                            formikProps.values[event.target.name] = event.target.value;
+                                                                            processFormValues(props, formikProps.values);
+                                                                        }}
+                                                                        variant="outlined"
+                                                                        value={formikProps.values[column.name + "Relation"]}
+                                                                    >
+                                                                        <MenuItem key="lesser" value="lesser">Lesser than</MenuItem>
+                                                                        <MenuItem key="lesserorequal" value="lesserorequal">Lesser than or equal</MenuItem>
+                                                                        <MenuItem key="notequal" value="notequal">Not equal</MenuItem>
+                                                                        <MenuItem key="equal" value="equal">Equal</MenuItem>
+                                                                        <MenuItem key="greaterorequal" value="greaterorequal">Greater than or equal</MenuItem>
+                                                                        <MenuItem key="greater" value="greater">Greater than</MenuItem>
+                                                                    </TextField>
                                                                 </Grid>
                                                             </>
                                                         }
