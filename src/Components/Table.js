@@ -317,7 +317,7 @@ const TableForm = (props) => {
                         <form className="form-container mt-4" onSubmit={formikProps.handleSubmit}>
                             {/* <Field type="number" name="numberOfColumnsToGenerate" className="form-control" />
                     <ErrorMessage name="username" component="div" /> */}
-                            {
+                            {/* {
                                 isError &&
                                 <Alert dismissible variant={'danger'} onClick={() => setError(false)}>
                                     {errorText}
@@ -328,7 +328,7 @@ const TableForm = (props) => {
                                 <Alert dismissible variant={'success'} onClick={() => setSuccess(false)}>
                                     {successText}
                                 </Alert>
-                            }
+                            } */}
                             <TextField
                                 name="numberOfColumnsToGenerate"
                                 label="Number of rows to generate"
@@ -591,6 +591,18 @@ const TableForm = (props) => {
                                     }
                                 </Grid>
                             </div>
+                            {
+                                isError &&
+                                <Alert className="mt-4" dismissible variant={'danger'} onClick={() => setError(false)}>
+                                    {errorText}
+                                </Alert>
+                            }
+                            {
+                                isSuccess &&
+                                <Alert className="mt-4" dismissible variant={'success'} onClick={() => setSuccess(false)}>
+                                    {successText}
+                                </Alert>
+                            }
                             <Button variant="outlined" size="large" className="mt-2" type="sumbit">Save Table</Button>
                         </form>
                     )}
