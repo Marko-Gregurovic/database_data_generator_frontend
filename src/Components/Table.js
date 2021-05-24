@@ -387,7 +387,10 @@ const TableForm = (props) => {
                                                                 ))}
                                                             </TextField>
                                                         </Grid>
-                                                        {(column.generationModeId == 17 || column.generationModeId == 13 || column.generationModeId == 11) &&
+                                                        {(column.generationModeId == 17 || 
+                                                        column.generationModeId == 13 || 
+                                                        column.generationModeId == 11 ||
+                                                        column.generationModeId == 22) &&   // for bigint
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -538,9 +541,10 @@ const TableForm = (props) => {
                                                             </>
                                                         }
                                                         {
-                                                            (column.generationModeId == 17 || 
-                                                                column.generationModeId == 10 ||
-                                                                column.generationModeId == 13) &&
+                                                            (column.generationModeId == 17 ||       // for int random
+                                                                column.generationModeId == 10 ||    // for date random
+                                                                column.generationModeId == 13 ||    // for numeric random
+                                                                column.generationModeId == 22) &&   // for bigint random
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
