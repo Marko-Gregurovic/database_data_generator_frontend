@@ -544,7 +544,8 @@ const TableForm = (props) => {
                                                             (column.generationModeId == 17 ||       // for int random
                                                                 column.generationModeId == 10 ||    // for date random
                                                                 column.generationModeId == 13 ||    // for numeric random
-                                                                column.generationModeId == 22) &&   // for bigint random
+                                                                column.generationModeId == 22 ||    // for bigint random
+                                                                column.generationModeId == 12) &&   // for timestamp random
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
