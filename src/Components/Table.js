@@ -26,7 +26,7 @@ const patternTooltip = `Creates strings by replacing the keywords with appropria
                            If you want to add $ without keyword parsing you can escape it with \\$.
                            You can add ' u' (eg. '$animal u$') to the end of string keywords to generate unique values in every row.
                            Keywords are: name, femalename, malename, animal, tvseries, movie, fruit, color, object, country, city,
-                           musicalinstrument, album, videogame, song, book, jobtitle, job, company.`
+                           musicalinstrument, album, videogame, song, book, jobtitle, job, company, gender, language, moviegenre, surname.`
 
 const theme = createMuiTheme({
     palette: {
@@ -402,7 +402,9 @@ const TableForm = (props) => {
                                                         {(column.generationModeId == 17 || 
                                                         column.generationModeId == 13 || 
                                                         column.generationModeId == 11 ||
-                                                        column.generationModeId == 22) &&   // for bigint
+                                                        column.generationModeId == 22 ||
+                                                        column.generationModeId == 23 ||
+                                                        column.generationModeId == 24) &&
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
@@ -560,7 +562,10 @@ const TableForm = (props) => {
                                                                 column.generationModeId == 10 ||    // for date random
                                                                 column.generationModeId == 13 ||    // for numeric random
                                                                 column.generationModeId == 22 ||    // for bigint random
-                                                                column.generationModeId == 12) &&   // for timestamp random
+                                                                column.generationModeId == 12 ||    // for timestamp random
+                                                                column.generationModeId == 23 ||    // for real
+                                                                column.generationModeId == 24       // for double precision
+                                                                ) &&   
                                                             <>
                                                                 <Grid item xs={2}>
                                                                     <TextField
