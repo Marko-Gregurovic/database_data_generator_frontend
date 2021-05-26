@@ -12,12 +12,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Alert from 'react-bootstrap/esm/Alert';
+import Tooltip from '@material-ui/core/Tooltip';
 // import black from '@material-ui/core/colors/';
 
 
 const validationSchema = Yup.object().shape({
 
 })
+
+const patternTooltip = `Creates strings by replacing the keywords with appropriate values and keeping the rest of the patter untouched.
+                           Keywords are put in between two $ signs.
+                           Example: '$name$ likes to pet $animal$'.
+                           If you want to add $ without keyword parsing you can escape it with \\$.
+                           You can add ' u' (eg. '$animal u$') to the end of string keywords to generate unique values in every row.
+                           Keywords are: name, femalename, malename, animal, tvseries, movie, fruit, color, object, country, city,
+                           musicalinstrument, album, videogame, song, book, jobtitle, job, company.`
 
 const theme = createMuiTheme({
     palette: {
@@ -34,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1
     },
+    customWidth: {
+        maxWidth: 800,
+      },
     paper: {
         padding: theme.spacing(1),
         textAlign: "center",
@@ -526,17 +538,20 @@ const TableForm = (props) => {
                                                             (column.generationModeId == 18) && // pattern
                                                             <>
                                                                 <Grid item xs={4}>
-                                                                    <TextField
-                                                                        name={column.name + "Pattern"}
-                                                                        label="Pattern"
-                                                                        defaultValue={column.pattern}
-                                                                        variant="outlined"
-                                                                        multiline
-                                                                        fullWidth
-                                                                        placeholder="Pattern"
-                                                                        onChange={formikProps.handleChange}
-                                                                        InputLabelProps={{ shrink: true }}
-                                                                    ></TextField>
+                                                                    <Tooltip title={<span style={{fontSize:"1.5em"}}>{patternTooltip}</span>}
+                                                                            classes={{ tooltip: classes.customWidth }}>
+                                                                        <TextField
+                                                                            name={column.name + "Pattern"}
+                                                                            label="Pattern"
+                                                                            defaultValue={column.pattern}
+                                                                            variant="outlined"
+                                                                            multiline
+                                                                            fullWidth
+                                                                            placeholder="Pattern"
+                                                                            onChange={formikProps.handleChange}
+                                                                            InputLabelProps={{ shrink: true }}
+                                                                        ></TextField>
+                                                                    </Tooltip>
                                                                 </Grid>
                                                             </>
                                                         }
