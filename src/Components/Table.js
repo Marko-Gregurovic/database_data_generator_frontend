@@ -399,7 +399,8 @@ const TableForm = (props) => {
                                                                 ))}
                                                             </TextField>
                                                         </Grid>
-                                                        {(column.generationModeId == 17 || 
+                                                        {
+                                                        (column.generationModeId == 17 || 
                                                         column.generationModeId == 13 || 
                                                         column.generationModeId == 11 ||
                                                         column.generationModeId == 22 ||
@@ -422,6 +423,33 @@ const TableForm = (props) => {
                                                                     <TextField
                                                                         name={column.name + "MaxNumber"}
                                                                         label="Max Value"
+                                                                        defaultValue={column.maxNumber}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                            </>
+                                                        }
+                                                         {
+                                                        (column.generationModeId == 26) &&
+                                                            <>
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "MinNumber"}
+                                                                        label="Number of rows before increment"
+                                                                        defaultValue={column.minNumber}
+                                                                        variant="outlined"
+                                                                        fullWidth
+                                                                        onChange={formikProps.handleChange}
+                                                                        InputLabelProps={{ shrink: true }}
+                                                                    ></TextField>
+                                                                </Grid>
+                                                                <Grid item xs={2}>
+                                                                    <TextField
+                                                                        name={column.name + "MaxNumber"}
+                                                                        label="Max Value before reset to 1"
                                                                         defaultValue={column.maxNumber}
                                                                         variant="outlined"
                                                                         fullWidth
