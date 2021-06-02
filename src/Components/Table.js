@@ -407,7 +407,7 @@ const TableForm = (props) => {
                                                         column.generationModeId == 23 ||
                                                         column.generationModeId == 24) &&
                                                             <>
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "MinNumber"}
                                                                         label="Min Value"
@@ -419,7 +419,7 @@ const TableForm = (props) => {
                                                                     ></TextField>
                                                                 </Grid>
 
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "MaxNumber"}
                                                                         label="Max Value"
