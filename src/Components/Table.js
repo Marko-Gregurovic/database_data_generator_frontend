@@ -476,7 +476,7 @@ const TableForm = (props) => {
                                                         }
                                                         {(column.generationModeId == 10) &&  // date random from interval
                                                             <>
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "DateFrom"}
                                                                         label="From date"
@@ -489,7 +489,7 @@ const TableForm = (props) => {
                                                                     ></TextField>
                                                                 </Grid>
 
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "DateTo"}
                                                                         label="To date"
@@ -507,7 +507,7 @@ const TableForm = (props) => {
                                                         }
                                                         {(column.generationModeId == 12) &&  // timestamp random from interval
                                                             <>
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "DateFrom"}
                                                                         label="From date"
@@ -520,7 +520,7 @@ const TableForm = (props) => {
                                                                     ></TextField>
                                                                 </Grid>
 
-                                                                <Grid item xs={2}>
+                                                                <Grid item xs={1}>
                                                                     <TextField
                                                                         name={column.name + "DateTo"}
                                                                         label="To date"
